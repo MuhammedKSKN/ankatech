@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/free-photo/front-view-lawyer-working-with-documents_23-2151202361.jpg?t=st=1728037121~exp=1728040721~hmac=ac8012525e7b03b10a82111bae9d83fbd519058c47e06c39b95c89365e59ee50&w=740');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .radio-group {
+            margin: 10px 0;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px -10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .login-link {
+            margin-top: 10px;
+            color: #353535;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Kayıt Formu -->
+<div class="container" id="registerForm">
+    <h2>Kayıt Ol</h2>
+    <form action="{{ url_for('register') }}" method="post">
+        <div class="radio-group">
+            <label style="color: #353535;">
+                <input type="radio" name="registerUserType" value="avukat" required onchange="toggleAvukatFields(true)">Avukat
+            </label>
+            <label style="color: #353535;">
+                <input type="radio" name="registerUserType" value="kullanici" required onchange="toggleAvukatFields(false),toggleAdminFields(false)">Kullanıcı
+            </label>
+            <!-- <label style="color: #353535;">
+                <input type="radio" name="registerUserType" value="admin" required onchange="toggleAdminFields(true),toggleAvukatFields(false)">Admin
+            </label> -->
+        </div>
+        <input type="text" name="firstName" placeholder="İsim" required>
+        <input type="text" name="lastName" placeholder="Soyisim" required>
+        <input type="text" name="registerUsername" placeholder="Kullanıcı Adı" required>
+        <input type="password" name="registerPassword" placeholder="Şifre" required>
+
+        <!-- E-posta Alanı -->
+        <input type="text" name="email" placeholder="E-posta" required>
+
+        <!-- 
+        Telefon Numarası 
+        <input type="text" name="phone" placeholder="Telefon Numarası" required>
+        -->
+        <!-- Avukat için Sicil No ve Baro ID -->
+        <input type="text" name="sicilNo" id="sicilInput" placeholder="Sicil Numarası" style="display: none;" required>
+        <input type="text" name="baroId" id="baroInput" placeholder="Baro ID" style="display: none;" required>
+
+        <!-- Admin için secret key -->
+        <!-- <input type="password" name="adminKey" id="adminKeyInput" placeholder="Admin secret key" style="display: none;" required> -->
+
+
+         <!-- Uzmanlık Alanı Seçimi -->
+        <select name="uzmanlikId" id="uzmanlikInput" style="display: none;" required>
+            <option value="familyLaw">Aile Hukuku</option>
+            <option value="criminalLaw">Ceza Hukuku</option>
+            <option value="workLaw">İş Hukuku</option>
+            <option value="tradeLaw">Ticaret Hukuku</option>
+        </select>
+        
+
+        <button type="submit">Kayıt Ol</button>
+    </form>
+    <a href="{{ url_for('login') }}" class="login-link">Zaten hesabın var mı? <strong>Giriş Yap</strong></a>
+</div>
+
+<script>
+    // Avukat seçildiğinde Sicil No, Baro ID ve Uzmanlık Alanı seçimlerini göster
+    function toggleAvukatFields(show) {
+        const sicilInput = document.getElementById('sicilInput');
+        const baroInput = document.getElementById('baroInput');
+        const uzmanlikInput = document.getElementById('uzmanlikInput');
+        
+        if (show) {
+            sicilInput.style.display = 'block';
+            baroInput.style.display = 'block';
+            uzmanlikInput.style.display = 'block';  // Uzmanlık alanını göster
+            sicilInput.setAttribute('required', true);
+            baroInput.setAttribute('required', true);
+            uzmanlikInput.setAttribute('required', true);  // Uzmanlık alanını zorunlu yap
+        } else {
+            sicilInput.style.display = 'none';
+            baroInput.style.display = 'none';
+            uzmanlikInput.style.display = 'none';  // Uzmanlık alanını gizle
+            sicilInput.removeAttribute('required');
+            baroInput.removeAttribute('required');
+            uzmanlikInput.removeAttribute('required');
+        }
+    }
+    
+</script>
+
+<!-- <script>
+    function toggleAdminFields(show) {
+        const adminKeyInput = document.getElementById('adminKeyInput');
+
+        if (show) {
+            adminKeyInput.style.display = 'block';            
+            adminKeyInput.setAttribute('required', true);
+        } else {
+            adminKeyInput.style.display = 'none';            
+            adminKeyInput.removeAttribute('required');           
+        }
+    }
+
+</script> -->
+
+</body>
+
+
+
+</html>

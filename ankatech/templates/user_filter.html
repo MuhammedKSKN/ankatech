@@ -1,0 +1,149 @@
+<!-- Add this just after the section header in settings-area -->
+<div class="filter-controls">
+    <div class="filter-group">
+        <input type="text" id="nameFilter" placeholder="İsme göre ara..." class="filter-input">
+        <select id="roleFilter" class="filter-select">
+            <option value="">Tüm Roller</option>
+            <option value="admin">Admin</option>
+            <option value="kullanici">Kullanıcı</option>
+            <option value="avukat">Avukat</option>
+        </select>
+        <button onclick="applyFilters()" class="filter-btn">Filtrele</button>
+        <button onclick="clearFilters()" class="clear-filter-btn">Filtreleri Temizle</button>
+    </div>
+</div>
+
+<style>
+.filter-controls {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filter-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filter-input,
+.filter-select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.filter-input {
+    min-width: 200px;
+}
+
+.filter-select {
+    min-width: 150px;
+}
+
+.filter-btn,
+.clear-filter-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: white;
+}
+
+.filter-btn {
+    background-color: #007bff;
+}
+
+.filter-btn:hover {
+    background-color: #0056b3;
+}
+
+.clear-filter-btn {
+    background-color: #6c757d;
+}
+
+.clear-filter-btn:hover {
+    background-color: #5a6268;
+}
+</style>
+
+<script>
+function loadUsers(nameFilter = '', roleFilter = '') {
+    const queryParams = new URLSearchParams();
+    if (nameFilter) queryParams.append('name', nameFilter);
+    if (roleFilter) queryParams.append('role', roleFilter);
+    
+    fetch(`/get_users?${queryParams.toString()}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Sunucu hatası oluştu');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tbody = document.querySelector('.users-table tbody');
+            tbody.innerHTML = '';
+            
+            data.users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.kullanici_id}</td>
+                    <td>${user.ad} ${user.soyad}</td>
+                    <td>${user.eposta}</td>
+                    <td>${user.kullanici_adi || '-'}</td>
+                    <td>${user.rol}</td>
+                    <td>${user.kullanici_tipi}</td>
+                    <td>${user.sicil_no}</td>
+                    <td>
+                        <div class="user-actions">
+                            <button onclick="deleteUser(${user.kullanici_id})" class="delete-user-btn">
+                                Sil
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            if (data.users.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center">Filtrelere uygun kullanıcı bulunamadı.</td>
+                    </tr>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+            showError('settings-area', 'Kullanıcılar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+        });
+}
+
+function applyFilters() {
+    const nameFilter = document.getElementById('nameFilter').value;
+    const roleFilter = document.getElementById('roleFilter').value;
+    loadUsers(nameFilter, roleFilter);
+}
+
+function clearFilters() {
+    document.getElementById('nameFilter').value = '';
+    document.getElementById('roleFilter').value = '';
+    loadUsers();
+}
+
+// Update the existing event listener for Settings button
+document.querySelector('a[href="#"]:nth-child(6)').addEventListener('click', function() {
+    document.getElementById('content-area').style.display = 'none';
+    document.getElementById('ilanlar-area').style.display = 'none';
+    document.getElementById('clients-area').style.display = 'none';
+    document.getElementById('barolar-area').style.display = 'none';
+    document.getElementById('notifications-area').style.display = 'none';
+    document.getElementById('settings-area').style.display = 'block';
+    
+    loadUsers();
+});
+</script>

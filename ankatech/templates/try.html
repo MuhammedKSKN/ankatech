@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avukatımı Bul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/try.css') }}">
+</head>
+<body>
+        <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <a href="{{ url_for('index') }}" style="text-decoration: none; display: flex; align-items: center; color: inherit;">
+                <img src="{{ url_for('static', filename='images/terazi2.png') }}" alt="Logo" width="32" height="32">
+                <h1> Avukatımı Bul</h1>
+            </a>
+        </div>
+        <nav>
+            <a href="#" class="active" id="dashboard-btn"><span>Dashboard</span></a>
+            <a href="#" id="ilanlar-btn"><span>İlanlar</span></a>
+            <a href="#" id="clients-btn"><span>Avukatlar</span></a>
+            <a href="#" id="barolar-btn"><span>Barolar</span></a>
+            <a href="#"><span>Bildirimler</span></a>
+            <a href="#"><span>Settings</span></a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            
+            <div class="user-menu">
+                <div class="notifications">
+                    <span class="badge"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                        <p class="name">M&F</p>
+                        <p class="role">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Dashboard -->
+        <div class="dashboard" id="content-area">
+            <h2>Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Toplam Kullanıcılar</h3>
+                    <p class="value">{{ toplam_kullanici }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Toplam Avukatlar</h3>
+                    <p class="value">{{ avukat_sayisi }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Toplam Barolar</h3>
+                    <p class="value">{{ baro_sayisi }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Toplam İlanlar</h3>
+                    <p class="value">{{ ilan_sayisi }}</p>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- İlanlar Section -->
+        <div class="ilanlar" id="ilanlar-area" style="display: none;">
+            <div class="section-header">
+                <h2>İlanlar</h2>
+                <div class="error-message" style="display: none;"></div>
+            </div>
+            <div class="announcements-list">
+                {% for ilan in ilanlar %}
+                    <div class="announcement">
+                        <div class="announcement-header">
+                            <h3>{{ ilan['ad'] }} {{ ilan['soyad'] }}</h3>
+                        </div>
+                        <div class="announcement-content">
+                            <p><strong>Sicil No:</strong> {{ ilan['sicil_no'] }}</p>
+                            <p><strong>Deneyim:</strong> {{ ilan['deneyim_yili'] }} yıl | <strong>Bölüm:</strong> {{ ilan['bolum'] }}</p>
+                            <p><strong>İlan Metni:</strong> {{ ilan['ilan_metni'] }}</p>
+                            <div class="action-buttons">
+                                <a href="{{ url_for('edit_ilan', ilan_id=ilan['ilan_id']) }}" class="edit-btn">Düzenle</a>
+                                <form action="{{ url_for('delete_ilan', ilan_id=ilan['ilan_id']) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="delete-btn" onclick="return confirm('Bu ilanı silmek istediğinizden emin misiniz?')">Sil</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Clients Section -->
+        <div class="ilanlar" id="clients-area" style="display: none;">
+            <div class="section-header">
+                <h2>Avukatlar</h2>
+                <div class="error-message" style="display: none;"></div>
+            </div>
+            <div class="announcements-list">
+                {% for avukat in avukatlar %}
+                    <div class="announcement">
+                        <div class="announcement-header">
+                            <h3>{{ avukat['ad'] }} {{ avukat['soyad'] }}</h3>
+                        </div>
+                        <div class="announcement-content">
+                            <p><strong>Sicil No:</strong> {{ avukat['sicil_no'] }}</p>
+                            <p><strong>Baro:</strong> {{ avukat['baro_adi'] }}</p>
+                            <p><strong>Uzmanlık:</strong> {% for uzmanlik in avukat['uzmanliklar'] %}{{ uzmanlik }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+                            <div class="action-buttons">
+                                <a href="{{ url_for('edit_avukat', avukat_id=avukat['avukat_id']) }}" class="edit-btn">Düzenle</a>
+                                <form action="{{ url_for('delete_avukat', avukat_id=avukat['avukat_id']) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="delete-btn" onclick="return confirm('Bu avukatı silmek istediğinizden emin misiniz?')">Sil</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Barolar Section -->
+        <div class="ilanlar" id="barolar-area" style="display: none;">
+            <div class="section-header">
+                <h2>Barolar</h2>
+                <div class="error-message" style="display: none;"></div>
+            </div>
+            <div class="announcements-list">
+                {% for baro in barolar %}
+                    <div class="announcement">
+                        <div class="announcement-header">
+                            <h3>{{ baro.baro_adi }}</h3>
+                        </div>
+                        <div class="announcement-content">
+                            <p><strong>Şehir:</strong> {{ baro.sehir }}</p>
+                            <p><strong>Baro Başkanı:</strong> {{ baro.baskan_adi }}</p>
+                            <div class="action-buttons">
+                                <a href="{{ url_for('edit_baro', baro_id=baro.baro_id) }}" class="edit-btn">Düzenle</a>
+                                <form action="{{ url_for('delete_baro', baro_id=baro.baro_id) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="delete-btn" onclick="return confirm('Bu baroyu silmek istediğinizden emin misiniz?')">Sil</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include 'notif.html' %}
+        {% include 'user_list.html' %}
+        
+
+    </main>
+
+    <script>
+        
+        // Toggle active state for sidebar navigation
+        document.querySelectorAll('.sidebar nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                document.querySelector('.sidebar nav a.active').classList.remove('active');
+                e.currentTarget.classList.add('active');
+            });
+        });
+
+        function showError(areaId, message) {
+            const errorDiv = document.querySelector(`#${areaId} .error-message`);
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Dashboard content logic
+        document.getElementById('dashboard-btn').addEventListener('click', function () {
+            document.getElementById('content-area').style.display = 'block';
+            document.getElementById('ilanlar-area').style.display = 'none';
+            document.getElementById('clients-area').style.display = 'none';
+            document.getElementById('barolar-area').style.display = 'none';
+        });
+
+        // İlanlar content logic
+        document.getElementById('ilanlar-btn').addEventListener('click', function () {
+            document.getElementById('content-area').style.display = 'none';
+            document.getElementById('ilanlar-area').style.display = 'block';
+            document.getElementById('clients-area').style.display = 'none';
+            document.getElementById('barolar-area').style.display = 'none';
+            
+            fetch('/get_ilanlar')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Sunucu hatası oluştu');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const announcementsList = document.querySelector('#ilanlar-area .announcements-list');
+                    announcementsList.innerHTML = '';
+                    data.ilanlar.forEach(ilan => {
+                        announcementsList.innerHTML += `
+                            <div class="announcement">
+                                <div class="announcement-header">
+                                    <h3>${ilan['ad']} ${ilan['soyad']}</h3>
+                                </div>
+                                <div class="announcement-content">
+                                    <p><strong>Sicil No:</strong> ${ilan['sicil_no']}</p>
+                                    <p><strong>Deneyim:</strong> ${ilan['deneyim_yili']} yıl | <strong>Bölüm:</strong> ${ilan['bolum']}</p>
+                                    <p><strong>İlan Metni:</strong> ${ilan['ilan_metni']}</p>
+                                    <div class="action-buttons">
+                                        <a href="/edit_ilan/${ilan['ilan_id']}" class="edit-btn">Düzenle</a>
+                                        <button onclick="if(confirm('Bu ilanı silmek istediğinizden emin misiniz?')) { deleteIlan(${ilan['ilan_id']}) }" class="delete-btn">Sil</button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching ilanlar:', error);
+                    showError('ilanlar-area', 'İlanlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+                });
+        });
+
+        // Barolar section logic
+        document.getElementById('barolar-btn').addEventListener('click', function () {
+            document.getElementById('content-area').style.display = 'none';
+            document.getElementById('ilanlar-area').style.display = 'none';
+            document.getElementById('clients-area').style.display = 'none';
+            document.getElementById('barolar-area').style.display = 'block';
+            
+            fetch('/get_barolar')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Sunucu hatası oluştu');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const baroList = document.querySelector('#barolar-area .announcements-list');
+                    baroList.innerHTML = '';
+                    data.barolar.forEach(baro => {
+                        baroList.innerHTML += `
+                            <div class="announcement">
+                                <div class="announcement-header">
+                                    <h3>${baro.baro_adi}</h3>
+                                </div>
+                                <div class="announcement-content">
+                                    <p><strong>Şehir:</strong> ${baro.sehir || 'Belirtilmemiş'}</p>
+                                    <p><strong>Baro Başkanı:</strong> ${baro.baskan_adi}</p>
+                                    <div class="action-buttons">
+                                        <a href="/edit_baro/${baro.baro_id}" class="edit-btn">Düzenle</a>
+                                        <button onclick="if(confirm('Bu baroyu silmek istediğinizden emin misiniz?')) { deleteBaro(${baro.baro_id}) }" class="delete-btn">Sil</button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching barolar:', error);
+                    showError('barolar-area', 'Barolar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+                });
+        });
+
+        function deleteBaro(baroId) {
+            fetch(`/delete_baro/${baroId}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Silme işlemi başarısız oldu');
+                document.getElementById('barolar-btn').click(); // Refresh the list
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('barolar-area', 'Baro silinirken bir hata oluştu.');
+            });
+        }
+        
+
+        // Clients section logic
+        document.getElementById('clients-btn').addEventListener('click', function () {
+            document.getElementById('content-area').style.display = 'none';
+            document.getElementById('ilanlar-area').style.display = 'none';
+            document.getElementById('clients-area').style.display = 'block';
+            document.getElementById('barolar-area').style.display = 'none';
+            
+            fetch('/get_avukatlar')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Sunucu hatası oluştu');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const announcementsList = document.querySelector('#clients-area .announcements-list');
+                    announcementsList.innerHTML = '';
+                    data.avukatlar.forEach(avukat => {
+                        announcementsList.innerHTML += `
+                            <div class="announcement">
+                                <div class="announcement-header">
+                                    <h3>${avukat['ad']} ${avukat['soyad']}</h3>
+                                </div>
+                                <div class="announcement-content">
+                                    <p><strong>Sicil No:</strong> ${avukat['sicil_no']}</p>
+                                    <p><strong>Baro:</strong> ${avukat['baro_adi']}</p>
+                                    <p><strong>Uzmanlık:</strong> ${avukat['uzmanliklar'].join(", ")}</p>
+                                    <div class="action-buttons">
+                                        <a href="/edit_avukat/${avukat['avukat_id']}" class="edit-btn">Düzenle</a>
+                                        <button onclick="if(confirm('Bu avukatı silmek istediğinizden emin misiniz?')) { deleteAvukat(${avukat['avukat_id']}) }" class="delete-btn">Sil</button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching avukatlar:', error);
+                    showError('clients-area', 'Avukatlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+                });
+        });
+
+        // Delete functions
+        function deleteIlan(ilanId) {
+            fetch(`/delete_ilan/${ilanId}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Silme işlemi başarısız oldu');
+                document.getElementById('ilanlar-btn').click(); // Refresh the list
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('ilanlar-area', 'İlan silinirken bir hata oluştu.');
+            });
+        }
+
+        function deleteAvukat(avukatId) {
+            fetch(`/delete_avukat/${avukatId}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Silme işlemi başarısız oldu');
+                document.getElementById('clients-btn').click(); // Refresh the list
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError('clients-area', 'Avukat silinirken bir hata oluştu.');
+            });
+        }
+        
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>

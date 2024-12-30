@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Sayfası</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/free-photo/front-view-lawyer-working-with-documents_23-2151202361.jpg?t=st=1728037121~exp=1728040721~hmac=ac8012525e7b03b10a82111bae9d83fbd519058c47e06c39b95c89365e59ee50&w=740');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8); /* Beyaz arka planı yarı saydam yaparak arka plan görüntüsünü gösterir */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .radio-group {
+            margin: 10px 0;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px -10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Giriş Yap</h2>
+        <form action="#" method="post">
+            <div class="radio-group">
+                <label style="color: #353535;">
+                    <input type="radio" name="userType" value="avukat"  required>Avukat
+
+                </label>
+                <label style="color: #353535;">
+                    <input type="radio" name="userType" value="kullanici" required>Normal Kullanıcı
+                </label>
+                <label style="color: #353535;">
+                    <input type="radio" name="userType" value="admin" required>Admin
+                </label>
+            </div>
+            <input type="text" name="username" placeholder="Kullanıcı Adı" required>
+            <input type="password" name="password" placeholder="Şifre" required>
+            <button type="submit">Giriş Yap</button>
+            
+        </form>
+        <a href="{{ url_for('register') }}">
+            <button type="submit" style="margin-top: 5px">Kayıt ol </button></a>
+    </div>
+</body>
+</html>

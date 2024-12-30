@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Basic -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- Mobile Metas -->
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+    
+        <!-- Site Metas -->
+        <meta name="eywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+    
+        <title>Avukatımı Bul</title>
+    
+        <!-- bootstrap core css -->
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="{{ url_for('static', filename='css/bootstrap.css') }}"
+        />
+    
+        <link
+          href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap"
+          rel="stylesheet"
+        />
+        <!-- Custom styles for this template -->
+        <link
+          href="{{ url_for('static', filename='css/style.css') }}"
+          rel="stylesheet"
+        />
+        <!-- responsive style -->
+        <link
+          href="{{ url_for('static', filename='css/responsive.css') }}"
+          rel="stylesheet"
+        />
+      </head>
+<body class="sub_page">
+    <div class="hero_area">
+        <!-- header section starts -->
+        <header class="header_section">
+          <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+              <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/terazi.png') }}" alt="" />
+                <span> Avukatımı Bul </span>
+              </a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+        
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('index') }}">Anasayfa <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('hakkımızda') }}"> Hakkımızda</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('yapayzeka') }}"> Dava Tahmini Yap </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('asistan') }}"> Avukat Tavsiyesi Al </a>
+                  </li>
+                  
+                  <!-- İlan Ver bağlantısı -->
+                  {% if session.get('sicil_no') %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('ilan') }}">İlan Ver</a>
+                  </li>
+                  {% endif %}
+        
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('sss') }}">SSS </a>
+                  </li>
+                </ul>
+                <div class="user_option">
+                  {% if session.get('username') %}  <!-- Oturum açılmışsa -->
+                  <div class="dropdown">
+                    <span class="username">{{ session['username'] }}</span>  <!-- Kullanıcı adını göster -->
+                    <div class="dropdown-content">
+                      <a href="{{ url_for('logout') }}">Çıkış Yap</a>  <!-- Çıkış yap linki -->
+                    </div>
+                  </div>
+                  {% else %}
+                  <a href="{{ url_for('login') }}">
+                    <span>Giriş Yap</span>  <!-- Giriş yapmamışsa Login yaz -->
+                  </a>
+                  {% endif %}
+                  <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                    <button class="btn my-2 my-sm-0 nav_search-btn" type="submit"></button>
+                  </form>
+                </div>
+              </div>
+              <div>
+                <div class="custom_menu-btn">
+                  <button>
+                    <span class="s-1"></span>
+                    <span class="s-2"></span>
+                    <span class="s-3"></span>
+                  </button>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </header>
+        <!-- header section ends -->
+      </div>
+    <div class="container">
+        <h1 class="text-center my-4">Avukat İlanlarını Düzenle</h1>
+        <div class="row">
+            {% if ilanlar %}
+                {% for ilan in ilanlar %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                İlan ID: {{ ilan.ilan_id }}
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Ad:</strong> {{ ilan.ad }}</p>
+                                <p><strong>Soyad:</strong> {{ ilan.soyad }}</p>
+                                <p><strong>Sicil No:</strong> {{ ilan.sicil_no }}</p>
+                                <p><strong>Deneyim Yılı:</strong> {{ ilan.deneyim_yili }}</p>
+                                <p><strong>Bölüm:</strong> {{ ilan.bolum }}</p>
+                                <p><strong>İlan Metni:</strong></p>
+                                <p>{{ ilan.ilan_metni }}</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="/update_ilan/{{ ilan.ilan_id }}" class="btn btn-edit">Düzenle</a>
+                                <a href="/delete_ilan/{{ ilan.ilan_id }}" class="btn btn-delete" onclick="return confirm('Bu ilanı silmek istediğinize emin misiniz?');">Sil</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-warning text-center" role="alert">
+                        Bu avukata ait ilan bulunamadı.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="/avukatlar" class="btn btn-secondary">Avukat Listesine Dön</a>
+        </div>
+    </div>
+    
+</body>
+
+</html>

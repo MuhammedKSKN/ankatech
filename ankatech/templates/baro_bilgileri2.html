@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <!-- Basic -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Site Metas -->
+        <meta name="keywords" content="Avukat, İlan, Hukuk, Uzmanlık" />
+        <meta name="description" content="Avukat ilanı oluşturma platformu." />
+        <meta name="author" content="Avukatımı Bul" />
+      
+        <title>İlan Oluştur</title>
+      
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+        <!-- Responsive style -->
+        <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+      </head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Baro Bilgileri</h3>
+                {% if user_type == 'baskan' %}
+                    <span class="badge bg-success">Baro Başkanı</span>
+                {% else %}
+                    <span class="badge bg-info">Baro Üyesi</span>
+                {% endif %}
+            </div>
+            
+            <div class="card-body">
+                {% if user_type == 'baskan' %}
+                    <!-- Başkan için düzenlenebilir form -->
+                    <form method="POST" action="{{ url_for('baro_guncelle') }}">
+                        <div class="mb-3">
+                            <label class="form-label">Baro Adı:</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   name="baro_adi" 
+                                   value="{{ baro.baro_adi }}" 
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Şehir:</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   name="sehir" 
+                                   value="{{ baro.sehir }}" 
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Başkan Avukat ID:</label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   name="baskani_avukat_id" 
+                                   value="{{ baro.baskani_avukat_id }}"
+                                   required>
+                            <small class="text-muted">
+                                Not: Başkanlığı devretmek için yeni başkanın avukat ID'sini giriniz.
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Güncelle</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <!-- Normal üyeler için salt okunur görünüm -->
+                    <div class="mb-3">
+                        <label class="fw-bold">Baro Adı:</label>
+                        <div class="read-only-info">
+                            {{ baro.baro_adi }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold">Şehir:</label>
+                        <div class="read-only-info">
+                            {{ baro.sehir }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="fw-bold">Başkan Avukat ID:</label>
+                        <div class="read-only-info">
+                            {{ baro.baskani_avukat_id }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+    <title>İlanlarım - Avukatımı Bul</title>
+    
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- header section -->
+    {% include 'header.html' %}
+
+    <!-- ilan section -->
+    <section class="contact_section layout_padding">
+        <div class="container">
+            <div class="heading_container">
+                <h2>İlanlarım</h2>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    {% if ilanlar %}
+                        {% for ilan in ilanlar %}
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ ilan[2] }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Deneyim: {{ ilan[1] }} yıl</h6>
+                                <p class="card-text">{{ ilan[3] }}</p>
+                                
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info">
+                            Henüz ilan bulunmamaktadır. Yeni ilan eklemek için "İlan Ver" butonunu kullanabilirsiniz.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <a href="{{ url_for('ilan') }}" class="btn btn-primary">Yeni İlan Ver</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- info section -->
+    <section class="info_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Avukatımı Bul</h5>
+                    <p>Avukatlar ve müvekkiller için profesyonel bir platform.</p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <ul class="social-links">
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer section -->
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2024 Avukatımı Bul. Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+</body>
+</html>

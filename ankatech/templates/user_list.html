@@ -1,0 +1,188 @@
+<!-- Add this after the notifications section in your HTML -->
+ 
+<div class="ilanlar" id="settings-area" style="display: none;">
+    <div class="section-header">
+        <h2>Kullanıcı Yönetimi</h2>
+        <div class="error-message" style="display: none;"></div>
+    </div>
+    <!-- Add this before the users-table -->
+<div class="search-container">
+    <input 
+        type="text" 
+        id="userSearch" 
+        placeholder="Ad, e-posta veya sicil no ile ara..."
+        class="search-input"
+    >
+</div>
+
+<style>
+.search-container {
+    margin: 1rem 0;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+</style>
+
+<script>
+document.getElementById('userSearch').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('.users-table tbody tr');
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+});
+</script>
+    <div class="users-list">
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ad Soyad</th>
+                    <th>E-posta</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>Rol</th>
+                    <th>Kullanıcı Tipi</th>
+                    <th>Sicil No</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Users will be dynamically populated here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.users-table th,
+.users-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.users-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.user-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.delete-user-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.delete-user-btn:hover {
+    background-color: #c82333;
+}
+</style>
+
+<script>
+// Add click event listener for Settings button
+document.querySelector('a[href="#"]:nth-child(6)').addEventListener('click', function() {
+    // Hide all other content areas
+    document.getElementById('content-area').style.display = 'none';
+    document.getElementById('ilanlar-area').style.display = 'none';
+    document.getElementById('clients-area').style.display = 'none';
+    document.getElementById('barolar-area').style.display = 'none';
+    document.getElementById('notifications-area').style.display = 'none';
+    
+    // Show settings area
+    document.getElementById('settings-area').style.display = 'block';
+    
+    // Load users
+    loadUsers();
+});
+
+function loadUsers() {
+    fetch('/get_users')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Sunucu hatası oluştu');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tbody = document.querySelector('.users-table tbody');
+            tbody.innerHTML = '';
+            
+            data.users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.kullanici_id}</td>
+                    <td>${user.ad} ${user.soyad}</td>
+                    <td>${user.eposta}</td>
+                    <td>${user.kullanici_adi || '-'}</td>
+                    <td>${user.rol}</td>
+                    <td>${user.kullanici_tipi}</td>
+                    <td>${user.sicil_no}</td>
+                    <td>
+                        <div class="user-actions">
+                            <button onclick="deleteUser(${user.kullanici_id})" class="delete-user-btn">
+                                Sil
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+            showError('settings-area', 'Kullanıcılar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+        });
+}
+
+function deleteUser(kullaniciId) {
+    if (!confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
+        return;
+    }
+    
+    fetch(`/delete_user/${kullaniciId}`, {
+        method: 'POST',
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('İşlem başarısız oldu');
+        loadUsers(); // Refresh the users list
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('settings-area', 'Kullanıcı silinirken bir hata oluştu.');
+    });
+}
+</script>

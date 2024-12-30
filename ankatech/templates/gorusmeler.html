@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>İletişim</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+  
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section starts -->
+    {% include 'header.html' %}
+   
+   <!-- header section ends -->
+     </div>
+
+  <!-- about section -->
+  <div class="container mt-5">
+    <h2>Görüşmelerim</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Kullanıcı ID</th>
+          <th>Mesaj</th>
+          <th>Tarih</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for gorusme in gorusmeler %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ gorusme.kullanici_id }}</td>
+          <td>{{ gorusme.mesaj }}</td>
+          <td>{{ gorusme.tarih }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+<script>
+  document.getElementById("createMeetingBtn").onclick = async function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const avukatId = urlParams.get('avukat_id'); // URL'den avukat_id'yi al
+      
+      const kullaniciId = "{{ session['user_id'] }}"; // Kullanıcı ID'yi session'dan al
+      const mesaj = document.getElementById("mesaj").value; // Mesaj inputundan değer al
+      const tarih = document.getElementById("randevu_tarihi").value; // Tarih inputundan değer al
+      
+      if (!mesaj || !tarih) {
+          alert("Mesaj ve Tarih alanlarını doldurun!");
+          return;
+      }
+      
+      const response = await fetch('/create_meeting', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              avukat_id: avukatId,
+              kullanici_id: kullaniciId,
+              mesaj: mesaj,
+              tarih: tarih
+          })
+      });
+      
+      const messageDiv = document.getElementById("resultMessage");
+      if (response.ok) {
+          messageDiv.innerHTML = '<div class="alert alert-success">Görüşme başarıyla oluşturuldu!</div>';
+      } else {
+          const errorText = await response.text();
+          messageDiv.innerHTML = '<div class="alert alert-danger">Görüşme oluşturulamadı! Hata: ' + errorText + '</div>';
+      }
+  };
+  </script>
+  
+<script>
+document.getElementById("contactForm").onsubmit = async function(event) {
+    event.preventDefault(); // Formun normal gönderimini engelle
+
+    const formData = new FormData(this); // Form verilerini al
+
+    const response = await fetch('/send_email', {
+        method: 'POST',
+        body: formData
+    });
+
+    const messageDiv = document.getElementById("resultMessage");
+    if (response.ok) {
+        messageDiv.innerHTML = '<div class="alert alert-success">E-posta başarıyla gönderildi!</div>';
+    } else {
+        const errorText = await response.text();
+        messageDiv.innerHTML = '<div class="alert alert-danger">E-posta gönderilemedi! Hata: ' + errorText + '</div>';
+    }
+};
+</script>
+
+
+
+
+  <!-- end about section -->
+
+  <!-- info section -->
+  <section class="info_section ">
+    <div class="info_container layout_padding-top">
+      <div class="container">
+        <div class="info_top">
+          <div class="info_logo">
+            <img src="/static/images/logo.png" alt="" />
+            <span>
+              Avukatımı Bul
+            </span>
+          </div>
+          <div class="social_box">
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/fb.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/twitter.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/youtube.png') }}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="info_main">
+          <div class="row">
+            <div class="col-md-3 col-lg-2">
+              <div class="info_link-box">
+                <h5>Sayfalar</h5>
+                <ul>
+                  <li class="active">
+                    <a class="" href="{{ url_for('index') }}"
+                      >Ana Sayfa <span class="sr-only">(current)</span></a>
+                      <li class="">
+                        <a class="" href="{{ url_for('hakkımızda') }}">Hakkımızda </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('yapayzeka') }}">Dava Tahmini Yap </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('asistan') }}">Avukat Tavsiyesi Al </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('sss') }}">SSS </a>
+                      </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h5>MİSYON</h5>
+              <p>
+                Sürdürülebilir Kalkınma Hedefleri’nden “Barış, Adalet ve Güçlü
+                Kurumlar” ilkesine bağlı kalarak, herkesin hukuki süreçlerde
+                eşit ve adil bir şekilde temsil edilmesini sağlamak için
+                teknolojiyi kullanıyoruz. Yapay zeka desteğiyle, güvenilir
+                hukuki danışmanlığa kolay ve hızlı erişim sunarak topluma
+                hizmet ediyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3">
+              <h5>VİZYON</h5>
+              <p>
+                Adaletin herkes için erişilebilir olduğu bir dünya yaratmayı
+                hedefliyoruz. Teknolojiyi, bireylerin hukuki haklarını
+                savunabilmeleri için güçlü bir araç haline getirerek, toplumda
+                barış ve güçlü kurumlar inşa etmek amacıyla sektörde öncü
+                olmayı amaçlıyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3 offset-lg-1">
+              <div class="info_form">
+                <h5>BİZE ULAŞIN</h5>
+                <form action="">
+                  <input type="email" placeholder="Email" />
+                  <button>Gönder</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end info section -->
+  
+  <!-- footer section -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="footer_container">
+        
+        <p>
+          © 2024 Tüm Hakları Saklıdır.
+        </p>
+      </div>
+    </div>
+  </footer>
+  <!-- footer section -->
+
+  <!-- jQery -->
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+  <!-- bootstrap js -->
+  <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+  <!-- custom js -->
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baro Düzenle - Avukatımı Bul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/try.css') }}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/terazi2.png') }}" alt="Logo" width="32" height="32">
+            <h1>Avukatımı Bul</h1>
+        </div>
+        <nav>
+            <a href="#" id="dashboard-btn"><span>Dashboard</span></a>
+            <a href="#" id="ilanlar-btn"><span>İlanlar</span></a>
+            <a href="#" id="clients-btn"><span>Clients</span></a>
+            <a href="#" class="active" id="barolar-btn"><span>Barolar</span></a>
+            <a href="#"><span>Cases</span></a>
+            <a href="#"><span>Settings</span></a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            <div class="search">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-menu">
+                <div class="notifications">
+                    <span class="badge"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                        <p class="name">M&F</p>
+                        <p class="role">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="edit-form-container">
+            <h2>Baro Düzenle</h2>
+            <form method="POST" action="{{ url_for('edit_baro', baro_id=baro.baro_id) }}" class="edit-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="baro_adi">Baro Adı</label>
+                        <input type="text" id="baro_adi" name="baro_adi" value="{{ baro.baro_adi }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sehir">Şehir</label>
+                        <input type="text" id="sehir" name="sehir" value="{{ baro.sehir }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="baskan_id">Baro Başkanı</label>
+                        <select id="baskan_id" name="baskan_id">
+                            <option value="">Seçiniz...</option>
+                            {% for avukat in avukatlar %}
+                                <option value="{{ avukat.avukat_id }}" {% if avukat.avukat_id == baro.baskani_avukat_id %}selected{% endif %}>
+                                    {{ avukat.tam_ad }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <div class="left-actions">
+                        <button type="button" class="delete-btn" onclick="confirmDelete()">Sil</button>
+                    </div>
+                    <div class="right-actions">
+                        <a href="/" class="cancel-btn">İptal</a>
+                        <button type="submit" class="save-btn">Kaydet</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Silme işlemi için form -->
+            <form id="deleteForm" action="{{ url_for('delete_baro', baro_id=baro.baro_id) }}" method="POST" style="display: none;">
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function confirmDelete() {
+            if (confirm('Bu baroyu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
+</body>
+</html>

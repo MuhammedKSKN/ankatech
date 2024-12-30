@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Hakkımızda</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/hakkımızda.css') }}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+  <style>
+    .image-container {
+      width: 300px;
+      height: 300px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: auto;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .team-member {
+      margin-bottom: 30px;
+    }
+
+    .team-photo {
+      display: block;
+    }
+
+    .text-box {
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section starts -->
+    {% include 'header.html' %}
+    <!-- header section ends -->
+  </div>
+
+  <!-- about section -->
+  <section class="about_section layout_padding-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-9 mx-auto">
+          <div class="img-box">
+            <img src="{{ url_for('static', filename='images/about-img.jpg') }}" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="detail-box">
+        <h2>
+          Avukatımı Bul Nedir?
+        </h2>
+        <p>
+          Avukatımı Bul, herkesin hukuki süreçlere eşit ve adil bir şekilde erişmesini sağlamak için yapay zeka entegreli bir platformdur.<br>
+          Hukuki sorunlarınıza çözüm ararken, alanında uzman avukatları tek tıkla keşfedin. Avukatların profillerini ve kullanıcı yorumlarını inceleyerek en doğru tercihi yapın. Sorularınıza anında yanıt alarak, sürecinizi hızlandırın ve güvenle ilerleyin. Seçtiğiniz avukatla kolayca iletişim kurarak, hukuki süreçlerinizi en iyi şekilde yönetin.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- end about section -->
+
+  <!-- team section -->
+  <section class="about_section layout_padding-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-9 mx-auto">
+        </div>
+      </div>
+      <div class="detail-box">
+        <h2>
+          EKİBİMİZ
+          <br><br>
+        </h2>
+      </div>
+
+      <!-- Team Member 1 -->
+      <div class="row team-member">
+        <div class="col-md-4">
+          <div class="image-container">
+            <img src="{{ url_for('static', filename='images/avukat7.png') }}" alt="Team Member 1" class="team-photo">
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="text-box">
+            <h3 class="team-name">Muhammed Keskin</h3>
+            <p>Merhabalar ben Muhammed Keskin, Gazi Üniversitesi Bilgisayar Mühendisliği 3. sınıfım.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Member 2 -->
+      <div class="row team-member">
+        <div class="col-md-4">
+          <div class="image-container">
+            <img src="{{ url_for('static', filename='images/fiko.png') }}" alt="Team Member 2" class="team-photo">
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="text-box">
+            <h3 class="team-name">Fikret Arıcı</h3>
+            <p>Ben Fikret Arıcı, Gazi Üniversitesi Bilgisayar Mühendisliği 3. sınıfım.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end team section -->
+
+  <!-- info section -->
+  <section class="info_section">
+    <div class="info_container layout_padding-top">
+      <div class="container">
+        <div class="info_top">
+          <div class="info_logo">
+            <img src="/static/images/logo.png" alt="" />
+            <span>
+              Avukatımı Bul
+            </span>
+          </div>
+          <div class="social_box">
+            <a href="#"><img src="{{ url_for('static', filename='images/fb.png') }}" alt=""></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/twitter.png') }}" alt=""></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/linkedin.png') }}" alt=""></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/instagram.png') }}" alt=""></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/youtube.png') }}" alt=""></a>
+          </div>
+        </div>
+        <!-- Footer content -->
+      </div>
+    </div>
+  </section>
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <footer class="container-fluid footer_section">
+    <div class="container">
+      <p>&copy; <span id="displayDate"></span> All Rights Reserved By Ankatech</p>
+    </div>
+  </footer>
+  <!-- end footer section -->
+
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+</body>
+
+</html>

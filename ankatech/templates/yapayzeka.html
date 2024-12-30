@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Yapay Zekaya Sor</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section starts -->
+    {% include 'header.html' %}
+    <!-- header section ends -->
+  </div>
+<!-- AI form section -->
+<section class="ask_ai_section layout_padding-bottom">
+  <div class="container">
+      <h2>Yapay Zekaya Sor</h2>
+      <form id="predictForm">
+          <div class="form-group">
+              <label for="dava_turu">Dava Türü:</label>
+              <select class="form-control" id="dava_turu" name="dava_turu">
+                  <option value="0">Ceza</option>
+                  <option value="1">Medeni</option>
+                  <option value="2">İdare</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="delil_durumu">Delil Durumu:</label>
+              <select class="form-control" id="delil_durumu" name="delil_durumu">
+                  <option value="0">Yeterli</option>
+                  <option value="1">Yetersiz</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="tanik_sayisi">Tanık Sayısı:</label>
+              <select class="form-control" id="tanik_sayisi" name="tanik_sayisi">
+                  {% for i in range(6) %}
+                  <option value="{{ i }}">{{ i }}</option>
+                  {% endfor %}
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="delil_sayisi">Geçerli Delil Sayısı:</label>
+              <select class="form-control" id="delil_sayisi" name="delil_sayisi">
+                  {% for i in range(5) %}
+                  <option value="{{ i }}">{{ i }}</option>
+                  {% endfor %}
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="hukuki_dayanak">Hukuki Dayanaklar:</label>
+              <select class="form-control" id="hukuki_dayanak" name="hukuki_dayanak">
+                  <option value="0">CMK</option>
+                  <option value="1">TMK</option>
+                  <option value="2">TCK</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="hukuki_temsil">Tarafların Hukuki Temsili:</label>
+              <select class="form-control" id="hukuki_temsil" name="hukuki_temsil">
+                  <option value="0">Var</option>
+                  <option value="1">Yok</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="onceki_davalar">Önceki Davalar:</label>
+              <select class="form-control" id="onceki_davalar" name="onceki_davalar">
+                  {% for i in range(3) %}
+                  <option value="{{ i }}">{{ i }}</option>
+                  {% endfor %}
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="dava_suresi">Dava Süresi:</label>
+              <select class="form-control" id="dava_suresi" name="dava_suresi">
+                  <option value="0">1 Ay</option>
+                  <option value="1">3 Ay</option>
+                  <option value="2">6 Ay</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="hukuki_menfaat">Davacının Hukuki Menfaati:</label>
+              <select class="form-control" id="hukuki_menfaat" name="hukuki_menfaat">
+                  <option value="0">Var</option>
+                  <option value="1">Yok</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="karmaşıklık">Davayla İlgili Karmaşıklık:</label>
+              <select class="form-control" id="karmaşıklık" name="karmaşıklık">
+                  <option value="0">Basit</option>
+                  <option value="1">Orta</option>
+                  <option value="2">Karmaşık</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="yargi_durumu">Yargılamanın İlerleme Durumu:</label>
+              <select class="form-control" id="yargi_durumu" name="yargi_durumu">
+                  <option value="0">Devam ediyor</option>
+                  <option value="1">Kapandı</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="uzlasma">Uzlaşma Durumu:</label>
+              <select class="form-control" id="uzlasma" name="uzlasma">
+                  <option value="0">Var</option>
+                  <option value="1">Yok</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+              <label for="uzman_gorus">Uzman Görüşü:</label>
+              <select class="form-control" id="uzman_gorus" name="uzman_gorus">
+                  <option value="0">Evet</option>
+                  <option value="1">Hayır</option>
+              </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Sonucu Tahmin Et</button>
+      </form>
+
+      <div id="resultMessage" class="mt-3"></div> <!-- Sonuç mesajı için alan -->
+      <div id="resultText" class="mt-2" style="display:none; font-size: 18px; font-weight: bold;"></div> <!-- Sonuç metni için alan -->
+  </div>
+</section>
+
+<script>
+document.getElementById("predictForm").onsubmit = async function(event) {
+  event.preventDefault(); // Formun normal gönderimini engelle
+
+  const formData = new FormData(this); // Form verilerini al
+
+  const response = await fetch('http://127.0.0.1:5000/predict_case', {
+      method: 'POST',
+      body: formData
+  });
+
+  const messageDiv = document.getElementById("resultMessage");
+  const resultTextDiv = document.getElementById("resultText"); // Sonuç için yeni bir alan
+
+  if (response.ok) {
+      const result = await response.json(); // Yanıtı JSON formatında al
+      resultTextDiv.innerText = result.prediction; // Sadece tahmini yaz
+      resultTextDiv.style.display = 'block'; // Görünür yap
+      messageDiv.innerHTML = '<div class="alert alert-success">Sonuç başarıyla alındı!</div>';
+  } else {
+      const errorText = await response.text();
+      messageDiv.innerHTML = '<div class="alert alert-danger">Sonuç alınamadı! Hata: ' + errorText + '</div>';
+      resultTextDiv.style.display = 'none'; // Sonuç alanını gizle
+  }
+};
+</script>
+
+</script>
+
+  <!-- info section -->
+  <section class="info_section">
+    <div class="info_container layout_padding-top">
+      <div class="container">
+        <div class="info_top">
+          <div class="info_logo">
+            <img
+              src="{{ url_for('static', filename='images/terazi.png') }}"
+              alt=""
+            />
+            <span class="shift-right-down"> Avukatımı Bul </span>
+          </div>
+          <div class="social_box">
+            <a href="#">
+              <img
+                src="{{ url_for('static', filename='images/fb.png') }}"
+                alt=""
+              />
+            </a>
+            <a href="#">
+              <img
+                src="{{ url_for('static', filename='images/twitter.png') }}"
+                alt=""
+              />
+            </a>
+            <a href="#">
+              <img
+                src="{{ url_for('static', filename='images/linkedin.png') }}"
+                alt=""
+              />
+            </a>
+            <a href="#">
+              <img
+                src="{{ url_for('static', filename='images/instagram.png') }}"
+                alt=""
+              />
+            </a>
+            <a href="#">
+              <img
+                src="{{ url_for('static', filename='images/youtube.png') }}"
+                alt=""
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="info_main">
+          <div class="row">
+            <div class="col-md-3 col-lg-2">
+              <div class="info_link-box">
+                <h5>Sayfalar</h5>
+                <ul>
+                  <li class="active">
+                    <a class="" href="{{ url_for('index') }}"
+                      >Ana Sayfa <span class="sr-only">(current)</span></a>
+                      <li class="">
+                        <a class="" href="{{ url_for('hakkımızda') }}">Hakkımızda </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('yapayzeka') }}">Dava Tahmini Yap </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('asistan') }}">Avukat Tavsiyesi Al </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('sss') }}">SSS </a>
+                      </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h5>MİSYON</h5>
+              <p>
+                Sürdürülebilir Kalkınma Hedefleri’nden “Barış, Adalet ve Güçlü
+                Kurumlar” ilkesine bağlı kalarak, herkesin hukuki süreçlerde
+                eşit ve adil bir şekilde temsil edilmesini sağlamak için
+                teknolojiyi kullanıyoruz. Yapay zeka desteğiyle, güvenilir
+                hukuki danışmanlığa kolay ve hızlı erişim sunarak topluma
+                hizmet ediyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3">
+              <h5>VİZYON</h5>
+              <p>
+                Adaletin herkes için erişilebilir olduğu bir dünya yaratmayı
+                hedefliyoruz. Teknolojiyi, bireylerin hukuki haklarını
+                savunabilmeleri için güçlü bir araç haline getirerek, toplumda
+                barış ve güçlü kurumlar inşa etmek amacıyla sektörde öncü
+                olmayı amaçlıyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3 offset-lg-1">
+              <div class="info_form">
+                <h5>BİZE ULAŞIN</h5>
+                <form action="">
+                  <input type="email" placeholder="Email" />
+                  <button>Gönder</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-9 col-md-10 mx-auto">
+            <div class="info_contact layout_padding2">
+              <div class="row">
+                <div class="col-md-3">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/location.png') }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="detail-box">
+                      <h6>Konum</h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/mail.png') }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="detail-box">
+                      <h6>avukatımıbul@gmail.com</h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-5">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/call.png') }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="detail-box">
+                      <h6>Call +90 1234567890</h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- existing info section omitted for brevity -->
+  
+  <!-- footer section -->
+  <footer class="container-fluid footer_section ">
+    <div class="container">
+      <p>
+        &copy; <span id="displayDate"></span> All Rights Reserved By Ankatech
+      </p>
+    </div>
+  </footer>
+  <!-- end footer section -->
+
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Sıkça Sorulan Sorular</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+  
+  <style>
+    /* Cevapların başlangıçta gizlenmesi için stil ekleyelim */
+    .faq_item p {
+      display: none;
+    }
+    .faq_item h4 {
+      cursor: pointer;
+    }
+    .faq_item {
+      margin-bottom: 20px; /* Sorular arasında boşluk bırakır */
+    }
+    .faq_item {
+      margin-top: 50px; /* Sorular arasında boşluk bırakır */
+    }
+    .info_section {
+      position: relative;
+      background-color: #1a2e35;
+      color: #ffffff;
+    }
+
+    .info_section .heading_container {
+      margin-bottom: 45px;
+    }
+
+    .info_section h5 {
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .info_section .info_top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 35px;
+      margin-bottom: 75px;
+    }
+
+    .info_section .info_top .info_logo {
+      display: flex;
+    }
+
+    .info_section .info_top .info_logo img {
+      width: 65px;
+    }
+
+    .info_section .info_top .info_logo span {
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 32px;
+    }
+
+    .info_section .info_top .social_box {
+      display: flex;
+      align-items: center;
+    }
+
+    .info_section .info_top .social_box a {
+      margin: 0 10px;
+    }
+
+    .info_section .info_top .social_box a img {
+      max-width: 30px;
+      max-height: 30px;
+    }
+
+    .info_section a {
+      text-transform: none;
+    }
+
+    .info_section ul {
+      padding: 0;
+    }
+
+    .info_section ul li {
+      list-style-type: none;
+      margin: 3px 0;
+    }
+
+    .info_section ul li a {
+      color: #ffffff;
+    }
+
+    .info_section .info_link-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info_section .info_form form input {
+      outline: none;
+      width: 100%;
+      padding: 7px 10px;
+    }
+
+    .info_section .info_form form button {
+      display: inline-block;
+      padding: 8px 40px;
+      background-color: #ff4f5a;
+      color: #ffffff;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+      border-radius: 0;
+      border: 1.5px solid #ffffff;
+      margin-top: 15px;
+      text-transform: uppercase;
+      font-size: 15px;
+    }
+
+    .info_section .info_form form button:hover {
+      background-color: transparent;
+      border-color: #ff4f5a;
+      color: #ff4f5a;
+    }
+
+    .info_section .info_contact .link-box {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+      color: #ffffff;
+    }
+
+    .info_section .info_contact .link-box .img-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 45px;
+      min-height: 45px;
+      margin-right: 20px;
+    }
+
+    .info_section .info_contact .link-box .img-box img {
+      max-width: 30px;
+      max-height: 30px;
+    }
+
+  </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+ <!-- header section starts -->
+ {% include 'header.html' %}
+
+<!-- header section ends -->
+  </div>
+
+
+  <!-- freelance section -->
+
+  <section class="faq_section layout_padding">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-10 offset-md-1">
+          <div class="heading_container">
+            <h2>Soru & Cevap</h2>
+          </div>
+          <p>Avukatlara yöneltilen sorularla hukuki bilgilerinizi genişletin. Hukuki konularda merak ettiklerinizi sorun ve alanında uzman avukatlardan doğrudan cevaplar alın.</p>
+          
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <div class="faq_container">
+                <h3>
+                  <img src="{{ url_for('static', filename='images/question_icon.png') }}" alt="">
+                  Son Sorulan Sorular
+                </h3>
+                <div class="faq_list">
+                  
+                  <div class="faq_item">
+                    <h4>WhatsApp Üzerinden Gelen Tehdit Mesajlarına Karşı Ne Yapmalıyız?</h4>
+                    <p>Tehdit mesajlarını delil olarak saklayın ve en yakın karakola başvurarak şikayette bulunun. Delil olarak ekran görüntüleri ve ilgili belgeleri sunmanız gerekebilir.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>İş yerinde mobbinge uğruyorum, ne yapabilirim?</h4>
+                    <p>Mobbing davası açmak ve haklarınızı korumak için bir avukata danışmalısınız.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>Kira artış oranı nasıl hesaplanır?</h4>
+                    <p>Kira artışı, TÜFE'ye göre hesaplanmaktadır. Detaylar için yönetmeliklere göz atın.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>Veraset ilamı nasıl alınır?</h4>
+                    <p>Noter ya da mahkemelerden alınabilir. İlgili belgelerle başvurulması gereklidir.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>Boşanma davası ne kadar sürer?</h4>
+                    <p>Tarafların uzlaşmasına bağlı olarak, dava 6 aydan 1 yıla kadar sürebilir.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="faq_container">
+                <h3>
+                  <img src="{{ url_for('static', filename='images/question_icon.png') }}" alt="">
+                  Trend Sorular
+                </h3>
+                <div class="faq_list">
+                  <div class="faq_item">
+                    <h4>Hakimin aile konut kararı nasıl olur?</h4>
+                    <p>Hakim, boşanma sürecinde çocukların menfaatine göre konutun kime tahsis edileceğine karar verir. Genellikle çocukların velayetini alan tarafa konut tahsis edilir.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>Sanal Suçlarla İlgili Dosyanın Şahsen Görülmesi Nasıl Yapılır?</h4>
+                    <p>Dosyanızı şahsen görmek için dilekçe ile başvuru yapmanız gerekir. Emniyet Müdürlüğü'nden randevu alarak inceleme yapabilirsiniz.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>WhatsApp Üzerinden Gelen Tehdit Mesajlarına Karşı Ne Yapmalıyız?</h4>
+                    <p>Merhabalar, dün kardeşime WhatsApp üzerinden ailemizin isimlerinin bul...</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>Velayet davası nasıl açılır?</h4>
+                    <p>Çocuğun üstün yararını gözeterek, mahkemeye başvurulması gerekmektedir.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>İcra takibi nasıl başlatılır?</h4>
+                    <p>Alacaklı kişi avukatıyla birlikte icra müdürlüğüne başvuru yapar.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>Trafik kazası tazminatı nasıl alınır?</h4>
+                    <p>Kazada kusurlu olan tarafa karşı sigorta şirketinden tazminat talep edilebilir.</p>
+                  </div>
+                  <div class="faq_item">
+                    <h4>İş kazasında tazminat nasıl talep edilir?</h4>
+                    <p>İşverenin kusurlu olup olmadığı incelenerek, mahkemeye başvuru yapılabilir.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Eklenen JavaScript kodu -->
+          <script>
+            // Tüm soruları al
+            const faqItems = document.querySelectorAll('.faq_item h4');
+            
+            faqItems.forEach(item => {
+              item.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                
+                // Eğer cevap görünüyorsa, gizle
+                if (answer.style.display === "block") {
+                  answer.style.display = "none";
+                } else {
+                  // Eğer cevap gizliyse, göster
+                  answer.style.display = "block";
+                }
+              });
+            });
+          </script>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end freelance section -->
+
+  <!-- info section -->
+  <section class="info_section ">
+    <div class="info_container layout_padding-top">
+      <div class="container">
+        <div class="info_top">
+          <div class="info_logo">
+            <img src="/static/images/logo.png" alt="" />
+            <span>
+              Avukatımı Bul
+            </span>
+          </div>
+          <div class="social_box">
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/fb.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/twitter.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/youtube.png') }}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="info_main">
+          <div class="row">
+            <div class="col-md-3 col-lg-2">
+              <div class="info_link-box">
+                <h5>Sayfalar</h5>
+                <ul>
+                  <li class="active">
+                    <a class="" href="{{ url_for('index') }}"
+                      >Ana Sayfa <span class="sr-only">(current)</span></a>
+                      <li class="">
+                        <a class="" href="{{ url_for('hakkımızda') }}">Hakkımızda </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('yapayzeka') }}">Dava Tahmini Yap </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('asistan') }}">Avukat Tavsiyesi Al </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('sss') }}">SSS </a>
+                      </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h5>MİSYON</h5>
+              <p>
+                Sürdürülebilir Kalkınma Hedefleri’nden “Barış, Adalet ve Güçlü
+                Kurumlar” ilkesine bağlı kalarak, herkesin hukuki süreçlerde
+                eşit ve adil bir şekilde temsil edilmesini sağlamak için
+                teknolojiyi kullanıyoruz. Yapay zeka desteğiyle, güvenilir
+                hukuki danışmanlığa kolay ve hızlı erişim sunarak topluma
+                hizmet ediyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3">
+              <h5>VİZYON</h5>
+              <p>
+                Adaletin herkes için erişilebilir olduğu bir dünya yaratmayı
+                hedefliyoruz. Teknolojiyi, bireylerin hukuki haklarını
+                savunabilmeleri için güçlü bir araç haline getirerek, toplumda
+                barış ve güçlü kurumlar inşa etmek amacıyla sektörde öncü
+                olmayı amaçlıyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3 offset-lg-1">
+              <div class="info_form">
+                <h5>BİZE ULAŞIN</h5>
+                <form action="">
+                  <input type="email" placeholder="Email" />
+                  <button>Gönder</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-9 col-md-10 mx-auto">
+            <div class="info_contact layout_padding2">
+              <div class="row">
+                <div class="col-md-3">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/location.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        Konum
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/mail.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        avukatımıbul@gmail.com
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-5">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/call.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        Call +90 1234567890
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- end info section -->
+
+    <!-- footer section -->
+    <footer class="container-fluid footer_section ">
+      <div class="container">
+        <p>
+          &copy; <span id="displayDate"></span> All Rights Reserved By Ankatech
+        </p>
+      </div>
+    </footer>
+    <!-- end  footer section -->
+
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+</body>
+
+</html>

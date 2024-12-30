@@ -1,0 +1,258 @@
+<!-- Add this after the Barolar Section in your HTML -->
+<div class="ilanlar" id="notifications-area" style="display: none;">
+    <div class="section-header">
+        <h2>Bildirimler</h2>
+        <div class="error-message" style="display: none;"></div>
+    </div>
+    <div class="notifications-list">
+        <!-- Notifications will be dynamically populated here -->
+    </div>
+</div>
+
+<!-- Add this CSS to your existing styles -->
+<style>
+.notification-item {
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.notification-item.unread {
+    background-color: #f0f7ff;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.notification-time {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.notification-message {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.notification-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.mark-read-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.mark-read-btn:hover {
+    background-color: #45a049;
+}
+</style>
+
+<!-- Add this JavaScript to your existing script section -->
+<script>
+// Update the existing event listener for the Cases button
+document.querySelector('a[href="#"]:nth-child(5)').addEventListener('click', function () {
+    document.getElementById('content-area').style.display = 'none';
+    document.getElementById('ilanlar-area').style.display = 'none';
+    document.getElementById('clients-area').style.display = 'none';
+    document.getElementById('barolar-area').style.display = 'none';
+    document.getElementById('notifications-area').style.display = 'block';
+    
+    loadNotifications();
+});
+
+function loadNotifications() {
+    fetch('/get_bildirimler')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Sunucu hatası oluştu');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const notificationsList = document.querySelector('.notifications-list');
+            notificationsList.innerHTML = '';
+            
+            data.bildirimler.forEach(bildirim => {
+                const notificationItem = document.createElement('div');
+                notificationItem.className = `notification-item ${bildirim.okundu ? '' : 'unread'}`;
+                
+                notificationItem.innerHTML = `
+                    <div class="notification-header">
+                        <strong>${bildirim.avukat_adi}</strong>
+                        <span class="notification-time">${bildirim.olusturma_tarihi}</span>
+                    </div>
+                    <div class="notification-message">${bildirim.bildirim_mesaji}</div>
+                    ${!bildirim.okundu ? `
+                        <div class="notification-actions">
+                            <button onclick="markAsRead(${bildirim.bildirim_id})" class="mark-read-btn">
+                                Okundu Olarak İşaretle
+                            </button>
+                        </div>
+                    ` : ''}
+                `;
+                
+                notificationsList.appendChild(notificationItem);
+            });
+            
+            if (data.bildirimler.length === 0) {
+                notificationsList.innerHTML = '<p class="text-center p-4">Hiç bildirim bulunmamaktadır.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            showError('notifications-area', 'Bildirimler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+        });
+}
+
+function markAsRead(bildirimId) {
+    fetch(`/mark_notification_read/${bildirimId}`, {
+        method: 'POST',
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('İşlem başarısız oldu');
+        loadNotifications(); // Refresh the notifications list
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('notifications-area', 'Bildirim işaretlenirken bir hata oluştu.');
+    });
+}
+
+// Update notification badge in the header
+function updateNotificationBadge() {
+    fetch('/get_bildirimler')
+        .then(response => response.json())
+        .then(data => {
+            const unreadCount = data.bildirimler.filter(b => !b.okundu).length;
+            const badge = document.querySelector('.notifications .badge');
+            if (unreadCount > 0) {
+                badge.style.display = 'block';
+                badge.textContent = unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+}
+// Update the existing event listener for the Cases button
+document.querySelector('a[href="#"]:nth-child(5)').addEventListener('click', showNotifications);
+
+// Add click event listener for the notification icon
+document.querySelector('.notifications').addEventListener('click', showNotifications);
+
+function showNotifications() {
+    // Remove active class from all sidebar items
+    document.querySelectorAll('.sidebar nav a').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Add active class to Cases link in sidebar
+    document.querySelector('a[href="#"]:nth-child(5)').classList.add('active');
+    
+    // Hide all other content areas
+    document.getElementById('content-area').style.display = 'none';
+    document.getElementById('ilanlar-area').style.display = 'none';
+    document.getElementById('clients-area').style.display = 'none';
+    document.getElementById('barolar-area').style.display = 'none';
+    
+    // Show notifications area
+    document.getElementById('notifications-area').style.display = 'block';
+    
+    // Load notifications
+    loadNotifications();
+}
+
+function loadNotifications() {
+    fetch('/get_bildirimler')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Sunucu hatası oluştu');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const notificationsList = document.querySelector('.notifications-list');
+            notificationsList.innerHTML = '';
+            
+            data.bildirimler.forEach(bildirim => {
+                const notificationItem = document.createElement('div');
+                notificationItem.className = `notification-item ${bildirim.okundu ? '' : 'unread'}`;
+                
+                notificationItem.innerHTML = `
+                    <div class="notification-header">
+                        <strong>${bildirim.avukat_adi}</strong>
+                        <span class="notification-time">${bildirim.olusturma_tarihi}</span>
+                    </div>
+                    <div class="notification-message">${bildirim.bildirim_mesaji}</div>
+                    ${!bildirim.okundu ? `
+                        <div class="notification-actions">
+                            <button onclick="markAsRead(${bildirim.bildirim_id})" class="mark-read-btn">
+                                Okundu Olarak İşaretle
+                            </button>
+                        </div>
+                    ` : ''}
+                `;
+                
+                notificationsList.appendChild(notificationItem);
+            });
+            
+            if (data.bildirimler.length === 0) {
+                notificationsList.innerHTML = '<p class="text-center p-4">Hiç bildirim bulunmamaktadır.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching notifications:', error);
+            showError('notifications-area', 'Bildirimler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+        });
+}
+
+function markAsRead(bildirimId) {
+    fetch(`/mark_notification_read/${bildirimId}`, {
+        method: 'POST',
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('İşlem başarısız oldu');
+        loadNotifications(); // Refresh the notifications list
+        updateNotificationBadge(); // Update the notification badge
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showError('notifications-area', 'Bildirim işaretlenirken bir hata oluştu.');
+    });
+}
+
+// Update notification badge in the header
+function updateNotificationBadge() {
+    fetch('/get_bildirimler')
+        .then(response => response.json())
+        .then(data => {
+            const unreadCount = data.bildirimler.filter(b => !b.okundu).length;
+            const badge = document.querySelector('.notifications .badge');
+            if (unreadCount > 0) {
+                badge.style.display = 'block';
+                badge.textContent = unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+}
+
+// Call updateNotificationBadge when page loads and periodically
+updateNotificationBadge();
+setInterval(updateNotificationBadge, 60000); // Update every minute
+</script>
+

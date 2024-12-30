@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Sohbet</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/hakkımızda.css') }}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+ <!-- header section starts -->
+ {% include 'header.html' %}
+
+<!-- header section ends -->
+  </div>
+
+
+  <!-- sohbet section -->
+
+ <!-- sohbet section -->
+<section class="sohbet_section">
+  <div class="container">
+    <h2 class="section-heading">Sohbet</h2>
+    <div class="chat-box" id="chat-box">
+      {% for message in messages %}
+        <div class="message">
+          <strong>{{ message.user }}</strong>: {{ message.text }}
+        </div>
+      {% endfor %}
+    </div>
+    <form id="message-form" method="POST" action="/send_message">
+      <input type="text" name="message" placeholder="Mesajınızı yazın..." required />
+      <button type="submit">Gönder</button>
+    </form>
+  </div>
+</section>
+<!-- end sohbet section -->
+
+
+  <!-- end sohbet section -->
+
+
+  <!-- info section -->
+
+  <section class="info_section ">
+    <div class="info_container layout_padding-top">
+      <div class="container">
+        <div class="info_top">
+          <div class="info_logo">
+            <img src="/static/images/logo.png" alt="" />
+            <span>
+              Avukatımı Bul
+            </span>
+          </div>
+          <div class="social_box">
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/fb.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/twitter.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/youtube.png') }}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="info_main">
+          <div class="row">
+            <div class="col-md-3 col-lg-2">
+              <div class="info_link-box">
+                <h5>Sayfalar</h5>
+                <ul>
+                  <li class="active">
+                    <a class="" href="{{ url_for('index') }}"
+                      >Ana Sayfa <span class="sr-only">(current)</span></a>
+                      <li class="">
+                        <a class="" href="{{ url_for('hakkımızda') }}">Hakkımızda </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('yapayzeka') }}">Dava Tahmini Yap </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('asistan') }}">Avukat Tavsiyesi Al </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('sss') }}">SSS </a>
+                      </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h5>MİSYON</h5>
+              <p>
+                Sürdürülebilir Kalkınma Hedefleri’nden “Barış, Adalet ve Güçlü
+                Kurumlar” ilkesine bağlı kalarak, herkesin hukuki süreçlerde
+                eşit ve adil bir şekilde temsil edilmesini sağlamak için
+                teknolojiyi kullanıyoruz. Yapay zeka desteğiyle, güvenilir
+                hukuki danışmanlığa kolay ve hızlı erişim sunarak topluma
+                hizmet ediyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3">
+              <h5>VİZYON</h5>
+              <p>
+                Adaletin herkes için erişilebilir olduğu bir dünya yaratmayı
+                hedefliyoruz. Teknolojiyi, bireylerin hukuki haklarını
+                savunabilmeleri için güçlü bir araç haline getirerek, toplumda
+                barış ve güçlü kurumlar inşa etmek amacıyla sektörde öncü
+                olmayı amaçlıyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3 offset-lg-1">
+              <div class="info_form">
+                <h5>BİZE ULAŞIN</h5>
+                <form action="">
+                  <input type="email" placeholder="Email" />
+                  <button>Gönder</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-9 col-md-10 mx-auto">
+            <div class="info_contact layout_padding2">
+              <div class="row">
+                <div class="col-md-3">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/location.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        Konum
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/mail.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        avukatımıbul@gmail.com
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-5">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/call.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        Call +90 1234567890
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <footer class="container-fluid footer_section ">
+    <div class="container">
+      <p>
+        &copy; <span id="displayDate"></span> All Rights Reserved By Ankatech
+      </p>
+    </div>
+  </footer>
+  <!-- end  footer section -->
+
+
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+
+</body>
+</body>
+
+</html>

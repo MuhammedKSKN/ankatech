@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Avukatımı Bul Asistanı</title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/asistan.css') }}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+
+  <style>
+    /* Ek CSS Stil Düzenlemeleri */
+    .option-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .option-button:hover {
+      background-color: #0056b3;
+    }
+
+    .info-box {
+      padding: 20px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      margin-top: 20px;
+      white-space: pre-line; /* Satır sonlarını korur */
+    }
+
+    .assistant_section {
+      padding: 50px 0;
+      background-color: #f5f5f5;
+    }
+
+    .assistant-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-box p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    .extra-options-container {
+      margin-top: 20px;
+    }
+
+    .username {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section starts -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='images/terazi.png') }}" alt="" />
+            <span> Avukatımı Bul </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('index') }}">Anasayfa <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('hakkımızda') }}"> Hakkımızda</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('yapayzeka') }}"> Dava Tahmini Yap </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('asistan') }}"> Avukat Tavsiyesi Al </a>
+              </li>
+              
+              <!-- İlan Ver bağlantısı -->
+              {% if session.get('sicil_no') %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('ilan') }}">İlan Ver</a>
+              </li>
+              {% endif %}
+    
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('sss') }}">SSS </a>
+              </li>
+            </ul>
+            <div class="user_option">
+              {% if session.get('username') %}  <!-- Oturum açılmışsa -->
+              <div class="dropdown">
+                <span class="username">{{ session['username'] }}</span>  <!-- Kullanıcı adını göster -->
+                <div class="dropdown-content">
+                  <a href="{{ url_for('logout') }}">Çıkış Yap</a>  <!-- Çıkış yap linki -->
+                </div>
+              </div>
+              {% else %}
+              <a href="{{ url_for('login') }}">
+                <span>Giriş Yap</span>  <!-- Giriş yapmamışsa Login yaz -->
+              </a>
+              {% endif %}
+              <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                <button class="btn my-2 my-sm-0 nav_search-btn" type="submit"></button>
+              </form>
+            </div>
+          </div>
+          <div>
+            <div class="custom_menu-btn">
+              <button>
+                <span class="s-1"></span>
+                <span class="s-2"></span>
+                <span class="s-3"></span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- header section ends -->
+
+    <!-- Assistant section starts -->
+    <section class="assistant_section layout_padding-bottom">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 col-lg-9 mx-auto">
+            <div class="assistant-box">
+              <div class="assistant-header">
+                <h2>Avukatımı Bul Asistanı</h2>
+              </div>
+              <div class="assistant-body">
+                <div class="question-box">
+                  <p>Probleminiz nedir?</p>
+                </div>
+                <div class="options-container">
+                  <button class="option-button" onclick="updateQuestion('Anayasa Hukuku')">Anayasa Hukuku</button>
+                  <button class="option-button" onclick="updateQuestion('İdare Hukuku')">İdare Hukuku</button>
+                  <button class="option-button" onclick="updateQuestion('Ceza Hukuku')">Ceza Hukuku</button>
+                  <button class="option-button" onclick="updateQuestion('Yargılama Hukuku')">Yargılama Hukuku</button>
+                  <button class="option-button" onclick="updateQuestion('Vergi Hukuku')">Vergi Hukuku</button>
+                  <button class="option-button" onclick="updateQuestion('İş Hukuku')">İş Hukuku</button>
+                  <button class="option-button" onclick="updateQuestion('Medeni Hukuk')">Medeni Hukuk</button>
+                  <button class="option-button" onclick="updateQuestion('Ticaret Hukuku')">Ticaret Hukuku</button>
+                  <button class="option-button" onclick="updateQuestion('Bankacılık Hukuku')">Bankacılık Hukuku</button>
+                </div>
+                <div class="extra-options-container" style="display: none;">
+                  <br>
+                  <p>İlgili Hukuk dalı ile avukat araması yapılsın mı?</p>
+                  <button class="option-button" id="nextButton" onclick="goToAvukatSorgu()">Evet</button>
+                  <button class="option-button" onclick="resetOptions()">Hayır</button>
+                  <br>
+                </div>
+                <div class="info-box" style="display: none;">
+                  <h4 id="lawDefinition"></h4>
+                  <p id="exampleQuestions"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <script>
+      
+      let selectedLaw = '';
+    
+      function updateQuestion(lawType) {
+        selectedLaw = lawType;
+        // Ekstra seçenekleri göster
+        document.querySelector('.extra-options-container').style.display = 'block';
+        showMoreInfo(); // Bilgiyi göster
+      }
+    
+      function goToAvukatSorgu() {
+        // Seçilen hukuk dalını URL'ye ekle
+        window.location.href = `/avukat_sorgu?avukat=${encodeURIComponent(selectedLaw)}`;
+      }
+    
+      function resetOptions() {
+        selectedLaw = '';
+        document.querySelector('.extra-options-container').style.display = 'none';
+        document.querySelector('.info-box').style.display = 'none'; // Bilgi kutusunu gizle
+      }
+    
+      function showMoreInfo() {
+        const lawDefinition = document.getElementById('lawDefinition');
+        const exampleQuestions = document.getElementById('exampleQuestions');
+    
+        // Seçimi kontrol et ve bilgileri ayarla
+        if (selectedLaw === 'Anayasa Hukuku') {
+          lawDefinition.textContent = `Anayasa Hukuku, bir devletin temel hukuk düzenini oluşturan, devletin yapısını, organlarının görev ve yetkilerini, vatandaşların temel hak ve özgürlüklerini düzenleyen hukuk dalıdır.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          Anayasa Mahkemesi'ne Başvuru Şartları Nelerdir?
+          Temel Haklarım İhlal Edildiğinde Ne Yapmalıyım?
+          Anayasa Değişikliklerinin Dava Sürecine Etkisi Var mı?
+          Devlet Organlarının Yetki İhlali Durumunda Hangi Haklara Sahibim?
+          İfade Özgürlüğüm Sınırlandırıldığında Hangi Hukuki Yolları Kullanabilirim?
+          Anayasa'nın Üstünlüğü İlkesi Davamı Nasıl Korur?
+          Yargı Bağımsızlığı İhlali Durumunda Ne Yapmalıyım?
+          Vatandaş Olarak Anayasa Mahkemesi'ne Şikayette Bulunabilir miyim?
+          Anayasa'da Belirtilen Sosyal Haklarımın İhlali Durumunda Nasıl Hak Arayabilirim?
+          Anayasa Mahkemesi Kararlarının Uygulanmaması Durumunda Ne Gibi Önlemler Alınır?`;
+        } else if (selectedLaw === 'İdare Hukuku') {
+          lawDefinition.textContent = `İdare Hukuku, kamu yönetimi ve idare ile ilgili hukuki kuralları düzenler. Bu hukuk dalı, devletin kamu hizmetlerini nasıl yürüttüğünü, kamu organlarının görev ve yetkilerini, vatandaşların idari işlemlerle ilgili hak ve yükümlülüklerini belirler.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          İdare Mahkemesi'ne Dava Açma Şartları Nelerdir?
+          Kamu Görevlisinin Yetki Aşımı Durumunda Ne Yapmalıyım?
+          İdari İşlemlerin Hukuka Uygunluğunu Nasıl Denetlerim?
+          Kamu Malı Üzerindeki Haklarımı İhlal Edildiğinde Nasıl Hak Arayabilirim?
+          İdari Denetim Mekanizmaları Nelerdir ve Nasıl Kullanılır?
+          İdare ile Bireyler Arasındaki Sözleşmelerde Hangi Hak ve Yükümlülükler Belirlenir?
+          Kamu Hizmetlerinin Eksik veya Hatalı Sunulması Durumunda Hangi Hukuki Yolları Kullanabilirim?
+          İdare Mahkemesi'nde Dava Süreçleri Nasıl İşler?
+          İdareye Karşı Açılabilecek İdari Davalar Hangi Konuları Kapsar?
+          İdarenin Kişisel Verileri Kullanması Durumunda Haklarım Nelerdir?`;
+        } else if (selectedLaw === 'Ceza Hukuku') {
+          lawDefinition.textContent = `Ceza Hukuku; suçları, bu suçların cezalarını ve cezai süreçleri düzenleyen hukuk dalıdır. Ceza Hukuku, devletin toplum düzenini koruma amacıyla bireylerin işlediği suçları tanımlar, suçlulara uygulanacak cezaları belirler ve cezai işlemlerin nasıl yürütüleceğini düzenler.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          Ceza davasında sanık olarak hangi haklara sahipim ve bu haklar nasıl korunur?
+          Ceza Davasında Savunma Stratejilerim Nelerdir?
+          İşlenen Suçun Unsurları Nasıl Belirlenir?
+          Ceza Mahkemesinde Dava Süreci Nasıl İşler?
+          Suçun Ağırlaştırıcı ve Hafifletici Nedenleri Nelerdir?
+          Ceza Sorumluluğumun Olup Olmadığını Nasıl Belirleyebilirim?
+          Ceza Davasında Tanıkların Rolü ve Önemi Nedir?
+          Alternatif Cezalar Nelerdir ve Hangi Durumlarda Uygulanır?
+          Ceza Mahkemesinde Temyiz Süreci Nasıl İşler?
+          Suçun Kanuni Sınırlamaları Nelerdir?`;
+        } else if (selectedLaw === 'Yargılama Hukuku') {
+          lawDefinition.textContent = `Yargılama Hukuku, mahkemelerdeki dava süreçlerini düzenleyen hukuk dalıdır. Bu alan; tarafların haklarını korumak, adil yargılanma ilkesini sağlamak ve hukukun üstünlüğünü temin etmek amacıyla mahkeme işlemlerini, delil sunma yollarını ve duruşma usullerini belirler.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          Yargılama sürecinde hangi haklara sahibim?
+          Dava açma süreci nasıl işliyor?
+          Duruşmalarda delil sunma kuralları nelerdir?
+          Yargılama hukukunda zaman aşımı süreleri nasıl işler?
+          Taraflar arasındaki uyuşmazlık nasıl çözülür?
+          İtiraz ve temyiz süreçleri arasında ne fark vardır?
+          Dava masrafları ve harçlar hakkında bilgi alabilir miyim?
+          Hukuki yardım alma hakkım var mı ve nasıl başvurabilirim?
+          Hangi durumlarda yeniden yargılama talep edebilirim?
+          Mahkeme kararlarına itiraz etme süresi nedir?`;
+        } else if (selectedLaw === 'Vergi Hukuku') {
+          lawDefinition.textContent = `Vergi Hukuku, devletin vergi toplama yetkisini ve bu süreçteki hukuki ilişkileri düzenleyen hukuk dalıdır. Vergi Hukuku, vergi mükelleflerinin haklarını ve yükümlülüklerini belirlerken, devletin vergi gelirlerini sağlamak amacıyla izlediği yöntemleri ve denetim süreçlerini de kapsar. Bu alan, vergi türleri, oranları, vergi beyannameleri ve vergi uyuşmazlıkları gibi konuları içerir.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          Hangi vergi türleri vardır ve bunların arasındaki farklar nelerdir?
+          Vergi mükellefleri hangi yükümlülüklere sahiptir?
+          Vergi beyannamesi nasıl doldurulur ve hangi sürelerde verilmelidir?
+          Vergi uyuşmazlıkları nasıl çözülür ve itiraz süreçleri nelerdir?
+          Devletin vergi denetim yetkileri nelerdir?
+          Vergi kaçakçılığı ve müeyyideleri hakkında bilgi alabilir miyim?
+          Gelir vergisi hesaplama yöntemleri nelerdir?
+          KDV nedir ve nasıl hesaplanır?
+          Vergi indirim ve muafiyetleri nasıl uygulanır?
+          Yerel vergiler ve ulusal vergiler arasındaki farklar nelerdir?`;
+        } else if (selectedLaw === 'İş Hukuku') {
+          lawDefinition.textContent = `İş Hukuku, işçi ve işveren arasındaki ilişkileri düzenleyen hukuk dalıdır. Bu alan; iş sözleşmeleri, işçi hakları, çalışma koşulları, iş güvenliği ve işçi sendikaları gibi konuları kapsar. İş Hukuku, işçinin korunması ve iş güvencesinin sağlanması amacıyla oluşturulmuş kuralları içerir.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          İş sözleşmesi ne zaman sona erer ve hangi haklara sahibim?
+          İşçi hakları nelerdir ve bunları nasıl koruyabilirim?
+          İş sağlığı ve güvenliği açısından hangi önlemler alınmalıdır?
+          Çalışma saatleri ve fazla mesai kuralları nelerdir?
+          İşverenin işçiye karşı sorumlulukları nelerdir?
+          İşçi sendikalarının rolü ve işçi haklarını koruma yöntemleri nelerdir?
+          İşten çıkarıldığımda hangi haklarım vardır?
+          Kıdem tazminatı ve ihbar tazminatı ne zaman talep edilebilir?
+          İş kazası durumunda hangi hukuki yollara başvurabilirim?
+          İşyeri disiplin kuralları ve işçiye yönelik uygulamaları nelerdir?`;
+        } else if (selectedLaw === 'Medeni Hukuk') {
+          lawDefinition.textContent = `Medeni Hukuk, bireylerin özel hukuk ilişkilerini düzenleyen hukuk dalıdır. Bu alan; mülkiyet, sözleşmeler, haksız fiil, aile hukuku ve miras hukuku gibi konuları kapsar. Medeni Hukuk, bireylerin kişisel haklarını koruma ve özel ilişkilerde adalet sağlama amacı güder.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          Mülkiyet hakkım nasıl korunur ve hangi durumlarda ihlal edilebilir?
+          Sözleşme nasıl kurulabilir ve geçerlilik şartları nelerdir?
+          Haksız fiil nedir ve bu durumda ne yapmalıyım?
+          Aile hukuku kapsamında hangi haklarım vardır?
+          Miras paylaşımı nasıl yapılır ve hangi kurallar geçerlidir?
+          Evlilik sözleşmesi ne zaman geçerli olur ve hangi hükümleri içerir?
+          Boşanma süreci ve haklarım hakkında bilgi alabilir miyim?
+          Velayet hakkı nasıl belirlenir ve hangi durumlar göz önünde bulundurulur?
+          Hediye verme sözleşmeleri hangi şartlarla geçerlidir?
+          Aile içi anlaşmazlıklarda hukuki yollara başvurma yöntemleri nelerdir?`;
+        } else if (selectedLaw === 'Ticaret Hukuku') {
+          lawDefinition.textContent = `Ticaret Hukuku, ticari ilişkileri ve işletmelerin faaliyetlerini düzenleyen hukuk dalıdır. Bu alan, ticaret şirketlerinin kuruluşu, ticari sözleşmeler, iflas hukuku, rekabet hukuku ve marka hukuku gibi konuları içerir. Ticaret Hukuku, ticari hayatın düzenli işlemesi ve tarafların haklarının korunması amacıyla oluşturulmuştur.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          Ticaret şirketlerinin kuruluş aşamaları nelerdir?
+          Ticari sözleşmelerde hangi unsurlar bulunmalıdır?
+          İflas süreci nasıl işler ve bu durumda neler yapılmalıdır?
+          Rekabet hukuku çerçevesinde hangi kurallar geçerlidir?
+          Marka tescili nasıl yapılır ve hangi avantajları vardır?
+          Ticari faaliyetlerde tarafların sorumlulukları nelerdir?
+          Ticaret mahkemesinde dava açma prosedürleri nasıldır?
+          İşletme devri süreci ve hukuki yükümlülükler nelerdir?
+          Ticari uyuşmazlıkların çözüm yolları nelerdir?
+          Ticaret Hukuku çerçevesinde tüketici hakları nasıl korunur?`;
+        } else if (selectedLaw === 'Bankacılık Hukuku') {
+          lawDefinition.textContent = `Bankacılık Hukuku, bankalar ve finansal kuruluşlar arasındaki ilişkileri düzenleyen hukuk dalıdır. Bu alan, bankaların faaliyetleri, kredi verme süreçleri, hesap yönetimi, mevduat sigortası ve finansal denetim gibi konuları kapsar. Bankacılık Hukuku, finansal sistemin sağlıklı işlemesini ve müşterilerin haklarının korunmasını sağlamak amacıyla oluşturulmuştur.`;
+          exampleQuestions.textContent = `Örnek Sorular:
+          Bankacılık hizmetlerinden yararlanırken hangi haklara sahibim?
+          Kredi alırken dikkat etmem gereken hususlar nelerdir?
+          Mevduat sigortası nedir ve nasıl işler?
+          Bankalar arası işlemlerde hangi kurallar geçerlidir?
+          Kredi sözleşmelerinin geçerlilik şartları nelerdir?
+          Bankacılık işlemlerinde müşteri bilgileri nasıl korunur?
+          Finansal denetim mekanizmaları ve bankaların sorumlulukları nelerdir?
+          Kredi notunun belirlenmesi ve etkileri nelerdir?
+          Hesap yönetiminde tüketici hakları ve itiraz süreçleri nasıl işler?
+          Banka dolandırıcılığı durumunda ne gibi önlemler alınmalıdır?`;
+        }
+    
+        // Bilgi kutusunu göster
+        document.querySelector('.info-box').style.display = 'block';
+      }
+    </script>
+    
+
+
+
+
+  <!-- info section -->
+
+  <section class="info_section ">
+    <div class="info_container layout_padding-top">
+      <div class="container">
+        <div class="info_top">
+          <div class="info_logo">
+            <img src="/static/images/logo.png" alt="" />
+            <span>
+              Avukatımı Bul
+            </span>
+          </div>
+          <div class="social_box">
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/fb.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/twitter.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/linkedin.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/instagram.png') }}" alt="">
+            </a>
+            <a href="#">
+              <img src="{{ url_for('static', filename='images/youtube.png') }}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="info_main">
+          <div class="row">
+            <div class="col-md-3 col-lg-2">
+              <div class="info_link-box">
+                <h5>Sayfalar</h5>
+                <ul>
+                  <li class="active">
+                    <a class="" href="{{ url_for('index') }}"
+                      >Ana Sayfa <span class="sr-only">(current)</span></a>
+                      <li class="">
+                        <a class="" href="{{ url_for('hakkımızda') }}">Hakkımızda </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('yapayzeka') }}">Dava Tahmini Yap </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('asistan') }}">Avukat Tavsiyesi Al </a>
+                      </li>
+                      <li class="">
+                        <a class="" href="{{ url_for('sss') }}">SSS </a>
+                      </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h5>MİSYON</h5>
+              <p>
+                Sürdürülebilir Kalkınma Hedefleri’nden “Barış, Adalet ve Güçlü
+                Kurumlar” ilkesine bağlı kalarak, herkesin hukuki süreçlerde
+                eşit ve adil bir şekilde temsil edilmesini sağlamak için
+                teknolojiyi kullanıyoruz. Yapay zeka desteğiyle, güvenilir
+                hukuki danışmanlığa kolay ve hızlı erişim sunarak topluma
+                hizmet ediyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3">
+              <h5>VİZYON</h5>
+              <p>
+                Adaletin herkes için erişilebilir olduğu bir dünya yaratmayı
+                hedefliyoruz. Teknolojiyi, bireylerin hukuki haklarını
+                savunabilmeleri için güçlü bir araç haline getirerek, toplumda
+                barış ve güçlü kurumlar inşa etmek amacıyla sektörde öncü
+                olmayı amaçlıyoruz.
+              </p>
+            </div>
+
+            <div class="col-md-3 offset-lg-1">
+              <div class="info_form">
+                <h5>BİZE ULAŞIN</h5>
+                <form action="">
+                  <input type="email" placeholder="Email" />
+                  <button>Gönder</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-9 col-md-10 mx-auto">
+            <div class="info_contact layout_padding2">
+              <div class="row">
+                <div class="col-md-3">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/location.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        Konum
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/mail.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        avukatımıbul@gmail.com
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+                <div class="col-md-5">
+                  <a href="#" class="link-box">
+                    <div class="img-box">
+                      <img src="{{ url_for('static', filename='images/call.png') }}" alt="">
+                    </div>
+                    <div class="detail-box">
+                      <h6>
+                        Call +90 1234567890
+                      </h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <footer class="container-fluid footer_section ">
+    <div class="container">
+      <p>
+        &copy; <span id="displayDate"></span> All Rights Reserved By Ankatech
+      </p>
+    </div>
+  </footer>
+  <!-- end  footer section -->
+
+
+  <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+
+</body>
+
+
+</html>

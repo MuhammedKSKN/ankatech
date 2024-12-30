@@ -1,0 +1,13 @@
+Flask==2.3.3
+Werkzeug>=2.3.7  # veya sadece Werkzeug==2.3.7
+mysql-connector-python==8.0.26
+requests==2.26.0
+Jinja2>=3.1.2
+importlib-metadata>=3.6.0
+blinker>=1.6.2
+numpy
+joblib
+scikit-learn
+CORS
+flask-cors
+bcrybt

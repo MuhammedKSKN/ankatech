@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avukat Düzenle - Avukatımı Bul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/try.css') }}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/terazi2.png') }}" alt="Logo" width="32" height="32">
+            <h1>Avukatımı Bul</h1>
+        </div>
+        <nav>
+            <a href="#" class="active" id="dashboard-btn"><span>Dashboard</span></a>
+            <a href="#" id="ilanlar-btn"><span>İlanlar</span></a>
+            <a href="#" id="clients-btn"><span>Clients</span></a>
+            <a href="#"><span>Calendar</span></a>
+            <a href="#"><span>Cases</span></a>
+            <a href="#"><span>Settings</span></a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            <div class="search">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="user-menu">
+                <div class="notifications">
+                    <span class="badge"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                </div>
+                <div class="profile">
+                    <div class="info">
+                        <p class="name">M&F</p>
+                        <p class="role">Admin</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="edit-form-container">
+            <h2>Avukat Düzenle</h2>
+            <form method="POST" action="{{ url_for('edit_avukat', avukat_id=avukat.avukat_id) }}" class="edit-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="ad">Ad</label>
+                        <input type="text" id="ad" name="ad" value="{{ avukat.ad }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="soyad">Soyad</label>
+                        <input type="text" id="soyad" name="soyad" value="{{ avukat.soyad }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sicil_no">Sicil No</label>
+                        <input type="text" id="sicil_no" name="sicil_no" value="{{ avukat.sicil_no }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="baro_adi">Baro</label>
+                        <select id="baro_adi" name="baro_adi" required>
+                            {% for baro in barolar %}
+                            <option value="{{ baro.baro_adi }}" {% if baro.baro_adi == avukat.baro_adi %}selected{% endif %}>
+                                {{ baro.baro_adi }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="uzmanliklar">Uzmanlıklar</label>
+                        <div class="checkbox-grid">
+                            {% for uzmanlik in tum_uzmanliklar %}
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="uzmanlik_{{ loop.index }}" name="uzmanliklar" 
+                                       value="{{ uzmanlik }}" {% if uzmanlik in avukat.uzmanliklar %}checked{% endif %}>
+                                <label for="uzmanlik_{{ loop.index }}">{{ uzmanlik }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <<div class="form-actions">
+                    <div class="left-actions">
+                        <button type="button" class="delete-btn" onclick="confirmDelete()">Sil</button>
+                    </div>
+                    <div class="right-actions">
+                        <a href="/clients" class="cancel-btn">İptal</a>
+                        <button type="submit" class="save-btn">Kaydet</button>
+                    </div>
+                </div>
+                
+                <!-- Silme işlemi için form -->
+                <form id="deleteForm" action="{{ url_for('delete_avukat', avukat_id=avukat.avukat_id) }}" method="POST" style="display: none;">
+                </form>
+                
+                <!-- JavaScript kodu -->
+                <script>
+                function confirmDelete() {
+                    if (confirm('Bu avukatı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
+                        document.getElementById('deleteForm').submit();
+                    }
+                }
+                </script>
+            </form>
+        </div>
+        <!-- Clients Section -->
+        <div class="ilanlar" id="clients-area" style="display: none;">
+            <div class="section-header">
+                <h2>Avukatlar</h2>
+                <div class="error-message" style="display: none;"></div>
+            </div>
+            <div class="announcements-list">
+                <!-- Avukatlar burada listelenecek -->
+            </div>
+        </div>
+    </main>
+    <script>
+        // Toggle active state for sidebar navigation
+        document.querySelectorAll('.sidebar nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                document.querySelector('.sidebar nav a.active').classList.remove('active');
+                e.currentTarget.classList.add('active');
+            });
+        });
+    
+        function showError(areaId, message) {
+            const errorDiv = document.querySelector(`#${areaId} .error-message`);
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+    
+        // Clients section logic
+        document.getElementById('clients-btn').addEventListener('click', function () {
+            document.getElementById('content-area').style.display = 'none';
+            document.getElementById('ilanlar-area').style.display = 'none';
+            document.getElementById('clients-area').style.display = 'block';
+            
+            fetch('/get_avukatlar')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Sunucu hatası oluştu');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const announcementsList = document.querySelector('#clients-area .announcements-list');
+                    announcementsList.innerHTML = '';
+                    data.avukatlar.forEach(avukat => {
+                        announcementsList.innerHTML += `
+                            <div class="announcement">
+                                <div class="announcement-header">
+                                    <h3>${avukat.ad} ${avukat.soyad}</h3>
+                                </div>
+                                <div class="announcement-content">
+                                    <p><strong>Sicil No:</strong> ${avukat.sicil_no}</p>
+                                    <p><strong>Baro:</strong> ${avukat.baro_adi}</p>
+                                    <p><strong>Uzmanlık:</strong> ${avukat.uzmanliklar.join(", ")}</p>
+                                    <div class="action-buttons">
+                                        <a href="/edit_avukat/${avukat.avukat_id}" class="edit-btn">Düzenle</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching avukatlar:', error);
+                    showError('clients-area', 'Avukatlar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+                });
+        });
+    </script>
+</body>
+</html>

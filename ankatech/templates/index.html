@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Site Metas -->
+    <meta name="eywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Avukatımı Bul</title>
+
+    <!-- bootstrap core css -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/bootstrap.css') }}"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom styles for this template -->
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+    />
+    <!-- responsive style -->
+    <link
+      href="{{ url_for('static', filename='css/responsive.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="hero_area">
+      <!-- header section starts -->
+
+      {% include 'header.html' %}
+
+<!-- header section ends -->
+        <!-- header section ends  -->
+      <section class="slider_section">
+        <div class="carousel_btn-container">
+          <a
+            class="carousel-control-prev"
+            href="#carouselExampleIndicators"
+            role="button"
+            data-slide="prev"
+          >
+            <span class="sr-only">Previous</span>
+          </a>
+          <a
+            class="carousel-control-next"
+            href="#carouselExampleIndicators"
+            role="button"
+            data-slide="next"
+          >
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+        <div
+          id="carouselExampleIndicators"
+          class="carousel slide"
+          data-ride="carousel"
+        >
+          <ol class="carousel-indicators">
+            <li
+              data-target="#carouselExampleIndicators"
+              data-slide-to="0"
+              class="active"
+            >
+              01
+            </li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1">
+              02
+            </li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2">
+              03
+            </li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-5 offset-md-1">
+                    <div class="detail-box">
+                      <h1>
+                        Doğru Avukat, <br />
+                        Tek Tık Uzağında!<br />
+                      </h1>
+                      <p>
+                        Avukatlarla doğrudan iletişim kurun. <br />
+                        Yapay zeka ile sorularınıza anında yanıt alın. <br />
+                        Avukatların deneyimlerini inceleyip size en uygun uzmanı
+                        seçin.<br /><br />
+                      </p>
+                      <h1>İYİ BİR SEÇİM, GÜVENLİ BİR GELECEK! <br /></h1>
+
+                        {% if not session.get('username') %}
+                        <div class="btn-box">
+                        <a href="{{ url_for('register') }}" class="btn-1">
+                          Üye Ol
+                        </a>
+                        <a href="{{ url_for('login') }}" class="btn-2">
+                          Giriş Yap
+                        </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                  </div>
+                  <div class="offset-md-1 col-md-4 img-container">
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/slider-img.png') }}"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-5 offset-md-1">
+                    <div class="detail-box">
+                      <h1>
+                        Hukukİ Destek, <br />
+                        Parmaklarınızın Ucunda! <br />
+                      </h1>
+                      <p>
+                        Sıkça sorulan sorulara bakarak aklınızdaki
+                        belirsizlikleri giderin!<br />
+                        Vakit kaybetmeden ihtiyacınıza en uygun avukatı hemen
+                        keşfedin.<br /><br />
+                      </p>
+                      <div class="btn-box">
+                        <a href="{{ url_for('avukat') }}" class="btn-1">
+                          Avukatımı Bul
+                        </a>
+                        <a href="{{ url_for('sss') }}" class="btn-2">
+                          Sıkça Sorulan Sorular
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="offset-md-1 col-md-4 img-container">
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/avukatfiguru.png') }}"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- end slider section -->
+    <!-- avukat section -->
+
+    <section class="experience_section layout_padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="img-box">
+              <img
+                src="{{ url_for('static', filename='images/experience-img.jpg') }}"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="detail-box">
+              <div class="heading_container">
+                <h2>Yüzlerce DeneyİMLİ Avukatı Hemen İncele!</h2>
+              </div>
+              <p>
+                Uzmanların detaylı özgeçmişlerini ve kullanıcı
+                değerlendirmelerini inceleyerek ihtiyaçlarınıza en uygun avukatı
+                kolayca seçin. Her bir avukat, alanında uzmanlık ve deneyim
+                sunarak adalet arayışınızda size rehberlik edecek.
+                <br />
+                <br />İyi bir seçim, güvenli bir gelecek!
+              </p>
+              <div class="btn-box">
+                <a href="{{ url_for('avukat') }}" class="btn-1">
+                  Avukatımı Bul
+                </a>
+                <!--<a href="" class="btn-2">
+                Hire
+              </a>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end experience section -->
+
+    <!-- yapay zeka section -->
+    <section class="ai layout_padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="detail-box">
+              <div class="heading_container">
+                <h2>AKLINA TAKILANLARI Yapay ZekaYA SOR!</h2>
+              </div>
+              <p>
+                Hukuki süreçlerinizle ilgili sorularınıza anında yanıt alın ve
+                ihtiyaçlarınıza uygun avukat önerileriyle adım atın. Hızlı ve
+                güvenilir destekle, karmaşık süreçleri daha kolay hale getirin.
+                <br /><br />Sorularınızı yanıtlayan yapay zeka, her adımda
+                yanınızda!
+              </p>
+              <div class="btn-box">
+                <a href="{{ url_for('yapayzeka') }}" class="btn-1">
+                  Yapay Zekaya Sor
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="img-box">
+              <img
+                src="{{ url_for('static', filename='images/yapayzekainsan.png') }}"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="about_section layout_padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 col-lg-9 mx-auto">
+            <div class="img-box">
+              <img
+                src="{{ url_for('static', filename='images/about-img.jpg') }}"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+        <div class="detail-box">
+          <h2>Avukatımı Bul Hakkında</h2>
+          <p>
+            Avukatımı Bul, hukuk alanında güvenilir bir rehber olmayı amaçlayan
+            yenilikçi bir platformdur. Kullanıcılar, hukuki sorularını yapay
+            zekaya sorarak anında cevaplar alabilir ve ihtiyaçlarına en uygun
+            avukatı kolayca bulabilirler. Avukatların uzmanlık alanlarına,
+            geçmiş deneyimlerine ve kullanıcı değerlendirmelerine göz atarak en
+            doğru seçimi yapmanızı sağlar. Ayrıca, doğrudan avukatlarla iletişim
+            kurarak hukuki süreçlerinizi daha etkin bir şekilde
+            yönetebilirsiniz. Teknoloji ve hukuk dünyasını bir araya getiren bu
+            uygulama, adalet arayışınızda size hız, güven ve profesyonel destek
+            sunar.
+            <br />
+            <br />
+            Kolay erişim, hızlı çözümler, güçlü avukatlar!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- end about section -->
+
+    <!-- freelance section -->
+
+    <section class="freelance_section">
+      <div id="accordion">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-5 offset-md-1">
+              <div class="detail-box">
+                <div class="heading_container">
+                  <h2>Tek Tıkla GÜvenİlİr Destek</h2>
+                </div>
+                <div class="tab_container">
+                  <div
+                    class="t-link-box"
+                    data-toggle="collapse"
+                    data-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/terazi.png') }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="detail-box">
+                      <!--<h5>
+                      $250 Million
+                    </h5>-->
+                      <h3>Yüzlerce Uzman Avukat</h3>
+                    </div>
+                  </div>
+                  <div
+                    class="t-link-box collapsed"
+                    data-toggle="collapse"
+                    data-target="#collapseTwo"
+                    aria-expanded="false"
+                    aria-controls="collapseTwo"
+                  >
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/f4.png') }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="detail-box">
+                      <!-- <h5>
+                      2 Million
+                    </h5>-->
+                      <h3>Gerçek Kullanıcı Deneyimleri</h3>
+                    </div>
+                  </div>
+                  <div
+                    class="t-link-box collapsed"
+                    data-toggle="collapse"
+                    data-target="#collapseThree"
+                    aria-expanded="false"
+                    aria-controls="collapseThree"
+                  >
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/kumsaati.png') }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="detail-box">
+                      <!--<h5>
+                      700,000
+                    </h5>-->
+                      <h3>Anında Hukuki Danışmanlık</h3>
+                    </div>
+                  </div>
+                  <div
+                    class="t-link-box collapsed"
+                    data-toggle="collapse"
+                    data-target="#collapseFour"
+                    aria-expanded="false"
+                    aria-controls="collapseFour"
+                  >
+                    <div class="img-box">
+                      <img
+                        src="{{ url_for('static', filename='images/guvenilir.png') }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="detail-box">
+                      <!--<h5>
+                      98%
+                    </h5>-->
+                      <h3>Hızlı ve Güvenilir Çözümler</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="collapse show"
+                id="collapseOne"
+                aria-labelledby="headingOne"
+                data-parent="#accordion"
+              >
+                <div class="img-box">
+                  <img
+                    src="{{ url_for('static', filename='images/buro.png') }}"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div
+                class="collapse"
+                id="collapseTwo"
+                aria-labelledby="headingTwo"
+                data-parent="#accordion"
+              >
+                <div class="img-box">
+                  <img
+                    src="{{ url_for('static', filename='images/kullancdeneyim.png') }}"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div
+                class="collapse"
+                id="collapseThree"
+                aria-labelledby="headingThree"
+                data-parent="#accordion"
+              >
+                <div class="img-box">
+                  <img
+                    src="{{ url_for('static', filename='images/dansmanlk.png') }}"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div
+                class="collapse"
+                id="collapseFour"
+                aria-labelledby="headingfour"
+                data-parent="#accordion"
+              >
+                <div class="img-box">
+                  <img
+                    src="{{ url_for('static', filename='images/hzlguven.png') }}"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end freelance section -->
+
+    <!-- client section -->
+
+    <section class="client_section layout_padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9 col-md-10 mx-auto">
+            <div class="heading_container">
+              <h2>Değerlendİrmeler</h2>
+            </div>
+            <div
+              id="carouselExampleControls"
+              class="carousel slide"
+              data-ride="carousel"
+            >
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="detail-box">
+                    <h4>Taylan Lakerta</h4>
+                    <p>
+                      Avukatımla bu platform sayesinde tanıştım ve ilk
+                      görüşmeden itibaren çok memnun kaldım. Hem hızlı hem de
+                      profesyonel bir hizmet aldım. Tüm süreç boyunca bana
+                      destek oldu ve her adımda detaylı bilgilendirme yaptı.
+                      Sayesinde davayı kazandım. Kesinlikle tavsiye ediyorum!
+                    </p>
+                    <img
+                      src="{{ url_for('static', filename='images/quote.png') }}"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="detail-box">
+                    <h4>Muhammed Keskin</h4>
+                    <p>
+                      Yapay zeka sayesinde hukuki sürecimde doğru adımlar attım.
+                      Kafamda beliren her soruya anında yanıt alarak zaman
+                      kaybetmeden ilerledim. Bana en uygun avukatı önerdi ve tüm
+                      süreç daha anlaşılır hale geldi. Kesinlikle güvenilir ve
+                      pratik bir destek sunuyor!
+                    </p>
+                    <img
+                      src="{{ url_for('static', filename='images/quote.png') }}"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="detail-box">
+                    <h4>Büşra Özlem Koç</h4>
+                    <p>
+                      Boşanma sürecim oldukça zorlayıcıydı, ancak bu platformdan
+                      bulduğum avukat tüm süreci daha kolay hale getirdi. Hem
+                      dava stratejisi hem de destekleyici yaklaşımı sayesinde,
+                      sorunsuz bir şekilde sonuca ulaştık. Gerçekten güvenilir
+                      ve profesyonel bir hizmet sundu. İyi ki bu avukatı
+                      seçmişim.
+                    </p>
+                    <img
+                      src="{{ url_for('static', filename='images/quote.png') }}"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <a
+                class="carousel-control-prev"
+                href="#carouselExampleControls"
+                role="button"
+                data-slide="prev"
+              >
+                <span class="sr-only">Previous</span>
+              </a>
+              <a
+                class="carousel-control-next"
+                href="#carouselExampleControls"
+                role="button"
+                data-slide="next"
+              >
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end client section -->
+
+    <!-- info section -->
+
+    <section class="info_section">
+      <div class="info_container layout_padding-top">
+        <div class="container">
+          <div class="info_top">
+            <div class="info_logo">
+              <img
+                src="{{ url_for('static', filename='images/terazi.png') }}"
+                alt=""
+              />
+              <span class="shift-right-down"> Avukatımı Bul </span>
+            </div>
+            <div class="social_box">
+              <a href="#">
+                <img
+                  src="{{ url_for('static', filename='images/fb.png') }}"
+                  alt=""
+                />
+              </a>
+              <a href="#">
+                <img
+                  src="{{ url_for('static', filename='images/twitter.png') }}"
+                  alt=""
+                />
+              </a>
+              <a href="#">
+                <img
+                  src="{{ url_for('static', filename='images/linkedin.png') }}"
+                  alt=""
+                />
+              </a>
+              <a href="#">
+                <img
+                  src="{{ url_for('static', filename='images/instagram.png') }}"
+                  alt=""
+                />
+              </a>
+              <a href="#">
+                <img
+                  src="{{ url_for('static', filename='images/youtube.png') }}"
+                  alt=""
+                />
+              </a>
+            </div>
+          </div>
+
+          <div class="info_main">
+            <div class="row">
+              <div class="col-md-3 col-lg-2">
+                <div class="info_link-box">
+                  <h5>Sayfalar</h5>
+                  <ul>
+                    <li class="active">
+                      <a class="" href="{{ url_for('index') }}"
+                        >Ana Sayfa <span class="sr-only">(current)</span></a>
+                        <li class="">
+                          <a class="" href="{{ url_for('hakkımızda') }}">Hakkımızda </a>
+                        </li>
+                        <li class="">
+                          <a class="" href="{{ url_for('avukat') }}">Avukatımı Bul </a>
+                        </li>
+                        <li class="">
+                          <a class="" href="{{ url_for('yapayzeka') }}">Dava Tahmini Yap </a>
+                        </li>
+                        <li class="">
+                          <a class="" href="{{ url_for('asistan') }}">Avukat Tavsiyesi Al </a>
+                        </li>
+                        <li class="">
+                          <a class="" href="{{ url_for('sss') }}">SSS </a>
+                        </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <h5>MİSYON</h5>
+                <p>
+                  Sürdürülebilir Kalkınma Hedefleri’nden “Barış, Adalet ve Güçlü
+                  Kurumlar” ilkesine bağlı kalarak, herkesin hukuki süreçlerde
+                  eşit ve adil bir şekilde temsil edilmesini sağlamak için
+                  teknolojiyi kullanıyoruz. Yapay zeka desteğiyle, güvenilir
+                  hukuki danışmanlığa kolay ve hızlı erişim sunarak topluma
+                  hizmet ediyoruz.
+                </p>
+              </div>
+
+              <div class="col-md-3">
+                <h5>VİZYON</h5>
+                <p>
+                  Adaletin herkes için erişilebilir olduğu bir dünya yaratmayı
+                  hedefliyoruz. Teknolojiyi, bireylerin hukuki haklarını
+                  savunabilmeleri için güçlü bir araç haline getirerek, toplumda
+                  barış ve güçlü kurumlar inşa etmek amacıyla sektörde öncü
+                  olmayı amaçlıyoruz.
+                </p>
+              </div>
+
+              <div class="col-md-3 offset-lg-1">
+                <div class="info_form">
+                  <h5>BİZE ULAŞIN</h5>
+                  <form action="">
+                    <input type="email" placeholder="Email" />
+                    <button>Gönder</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-9 col-md-10 mx-auto">
+              <div class="info_contact layout_padding2">
+                <div class="row">
+                  <div class="col-md-3">
+                    <a href="#" class="link-box">
+                      <div class="img-box">
+                        <img
+                          src="{{ url_for('static', filename='images/location.png') }}"
+                          alt=""
+                        />
+                      </div>
+                      <div class="detail-box">
+                        <h6>Konum</h6>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-md-4">
+                    <a href="#" class="link-box">
+                      <div class="img-box">
+                        <img
+                          src="{{ url_for('static', filename='images/mail.png') }}"
+                          alt=""
+                        />
+                      </div>
+                      <div class="detail-box">
+                        <h6>avukatımıbul@gmail.com</h6>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-md-5">
+                    <a href="#" class="link-box">
+                      <div class="img-box">
+                        <img
+                          src="{{ url_for('static', filename='images/call.png') }}"
+                          alt=""
+                        />
+                      </div>
+                      <div class="detail-box">
+                        <h6>Call +90 1234567890</h6>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end info section -->
+
+    <!-- footer section -->
+    <footer class="container-fluid footer_section">
+      <div class="container">
+        <p>
+          &copy; <span id="displayDate"></span> All Rights Reserved By Ankatech
+        </p>
+      </div>
+    </footer>
+    <!-- end  footer section -->
+
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  </body>
+</html>
+
